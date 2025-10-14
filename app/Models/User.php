@@ -16,9 +16,15 @@ class User extends Authenticatable
      * The attributes that are mass assignable.
      *
      * @var list<string>
+     *
+     * USE THIS IN FACTORY TO BYPASS FILLABLE:
+     * User::factory()->create([
+     * 'administrator_flag' => true,
+     * ]);
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
     ];
@@ -30,19 +36,15 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
+    public function posts()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
