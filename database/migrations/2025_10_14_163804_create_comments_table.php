@@ -21,6 +21,7 @@ return new class extends Migration
                     ->constrained()
                     ->onDelete('cascade');
             $table->string('content');
+            $table->integer('echoes');
             $table->timestamps();
         });
     }

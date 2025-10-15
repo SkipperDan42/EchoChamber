@@ -17,6 +17,7 @@ class Comment extends Model
      */
     protected $fillable = [
         'content',
+        'echoes',
     ];
 
     public function user()

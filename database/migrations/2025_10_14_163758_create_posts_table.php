@@ -18,6 +18,8 @@ return new class extends Migration
                     ->onDelete('cascade');   // Delete posts if the user is deleted
             $table->string('title');
             $table->string('content');
+            $table->integer('views');
+            $table->integer('echoes');
             $table->timestamps();
         });
     }
