@@ -14,6 +14,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
+        ////////////////////////////////////////// MANUAL SEEDING //////////////////////////////////////////
+
         // Create new admin User with Direct Assignment (bypasses $fillable)
         $a = new User();
         $a -> first_name = "Dan";
@@ -53,16 +55,28 @@ class UsersTableSeeder extends Seeder
                         ])
                         -> save();
 
+
+        ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
+
+        // Generate default passwords outside of factory to speed-up
+        // (previously took 40s to create User table)
+        $default_fake_password = bcrypt( fake() -> password() );
+        $default_admin_password = bcrypt( "SuperStr0ng4dm1nP4ss" );
+
         // Create non-admin users with a factory (98 for total 100 non-admin users)
+        // Password is passed from outside Factory
         User::factory()
                 -> count(98)
+                -> state(fn () => ['password' => $default_fake_password])
                 -> create();
 
         // Create admin users with a factory (3 for total 5 admin users)
+        // Password is passed from outside Factory
         User::factory()
-                ->count(3)
-                ->state(fn () => [  'email' => fake() -> userName() . '@echochamber.com',
-                                    'administrator_flag' => true])
-                ->create();
+                -> count(3)
+                -> state(fn () => [  'email' => fake() -> userName() . '@echochamber.com',
+                                     'administrator_flag' => true,
+                                     'password' => $default_admin_password])
+                -> create();
     }
 }

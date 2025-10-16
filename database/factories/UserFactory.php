@@ -14,6 +14,9 @@ class UserFactory extends Factory
     /**
      * Define the model's default state.
      *
+     * This will return a User with some restrictions:
+     *  - User email must be unique
+     *
      * @return array<string, mixed>
      */
     public function definition(): array
@@ -23,7 +26,6 @@ class UserFactory extends Factory
             'last_name' => fake() -> lastName(),
             'email' => fake() -> unique() -> safeEmail(),
             'administrator_flag' => false,
-            'password' => bcrypt( fake() -> password() ),
         ];
     }
 }

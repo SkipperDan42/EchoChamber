@@ -14,6 +14,8 @@ class PostsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        ////////////////////////////////////////// MANUAL SEEDING //////////////////////////////////////////
+
         // Create new Post (for UserID = 1) with Direct Assignment
         $user = User::first();
         if ($user) {
@@ -26,7 +28,6 @@ class PostsTableSeeder extends Seeder
             $a -> claps = 25;
             $a -> save();
         }
-
 
         // Create new Post (for User email = '2pintNigel@ukip.co.uk') with Create
         $user = User::where('email', '2pintNigel@ukip.co.uk')
@@ -43,7 +44,6 @@ class PostsTableSeeder extends Seeder
                         -> save();
         }
 
-
         // Create new Post (for random user) with Direct Assignment
         $users = User::all();
         if ($users) {
@@ -56,7 +56,6 @@ class PostsTableSeeder extends Seeder
             $c -> claps = 9;
             $c -> save();
         }
-
 
         // Create new Post (for random user) with Create
         $users = User::all();
@@ -72,18 +71,28 @@ class PostsTableSeeder extends Seeder
                         -> save();
         }
 
+
+        ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
+
+        // Get user count and pass to a Factory Helper Method to reduce DB queries
+        $user_count = User::all() -> count();
+
         // Create original posts with a factory (250 for each user making 2 - 3 posts)
+        // Factory uses withUserCount Helper Method
         Post::factory()
+                -> withUserCount($user_count)
                 -> count(250)
                 -> create();
 
         // Create echoes of posts that have been echoed (i.e. reposted)
+        // Factory uses withUserCount Helper Method
         // NOTE this could be a nested loop for re-re-posted, but for simplicity no dummy echoes are echoed
         $posts = Post::where('echoes' ,'>', 0)
                     -> get();
         foreach ($posts as $post) {
             $postid = $post -> id;
             Post::factory()
+                    -> withUserCount($user_count)
                     -> count($post -> echoes)
                     -> state(fn () => [ 'echoes' => 0,
                                         'echoed' => $postid])

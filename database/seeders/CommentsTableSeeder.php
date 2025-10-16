@@ -15,6 +15,8 @@ class CommentsTableSeeder extends Seeder
      */
     public function run(): void
     {
+        ////////////////////////////////////////// MANUAL SEEDING //////////////////////////////////////////
+
         // Create new Comment (for PostID = 1, UserID = 12) with Direct Assignment
         $post = Post::first();
         if ($post) {
@@ -37,7 +39,7 @@ class CommentsTableSeeder extends Seeder
                     -> first();
         if ($post && $user) {
             $heard = fake()
-                    ->numberBetween(0, $post -> heard);
+                    -> numberBetween(0, $post -> heard);
             $b = new Comment();
             $b -> create([  'user_id' => $user -> id,
                             'post_id' => $post -> id,
@@ -48,6 +50,8 @@ class CommentsTableSeeder extends Seeder
                         -> save();
         }
 
+
+        ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
 
         // Create comments with a factory
         Comment::factory()
