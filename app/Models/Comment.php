@@ -17,16 +17,17 @@ class Comment extends Model
      */
     protected $fillable = [
         'content',
-        'echoes',
+        'heard',
+        'claps',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this -> belongsTo(User::class);
     }
 
     public function post()
     {
-        return $this->belongsTo(Post::class);
+        return $this -> belongsTo(Post::class);
     }
 }

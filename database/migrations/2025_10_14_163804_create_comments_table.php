@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
 
-            $table->id();
-            $table->foreignId('user_id')     // The author
-                    ->constrained()                 // Shortcut for references('id')->on('users')
-                    ->onDelete('cascade');   // Delete posts if the user is deleted
-            $table->foreignId('post_id')    // The post
-                    ->constrained()
-                    ->onDelete('cascade');
-            $table->string('content');
-            $table->integer('echoes');
-            $table->timestamps();
+            $table -> id();
+            $table -> foreignId('user_id')
+                        -> constrained()                 // Shortcut for references('id')->on('users')
+                        -> onDelete('cascade');   // Delete comments if the user is deleted
+            $table -> foreignId('post_id')
+                        -> constrained()
+                        -> onDelete('cascade');  // Delete comments if the post is deleted
+            $table -> string('content');
+            $table -> integer('heard');
+            $table -> integer('claps');
+            $table -> timestamps();
         });
     }
 

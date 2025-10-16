@@ -21,20 +21,26 @@ class PostsTableSeeder extends Seeder
             $a -> user_id = $user -> id;
             $a -> title = "EchoChamber is LIVE!";
             $a -> content = "Just testing the system guys! EchoChamber is now ready to use.";
-            $a -> views = 1000;
+            $a -> heard = 100;
             $a -> echoes = 5;
+            $a -> claps = 25;
             $a -> save();
         }
 
 
         // Create new Post (for User email = '2pintNigel@ukip.co.uk') with Create
-        $user = User::where('email', '2pintNigel@ukip.co.uk') -> first();
+        $user = User::where('email', '2pintNigel@ukip.co.uk')
+                    -> first();
         if ($user) {
             $b = new Post();
-            $b -> create(['user_id' => $user->id,
+            $b -> create(['user_id' => $user -> id,
                           'title' => 'Bloody Boats!',
-                          'content' => 'These bloody boats in OUR CHANNEL. Arrgghh, racist rhetoric. Nonsense point. BRITAIN!'
-                        ]) -> save();
+                          'content' => 'These bloody boats in OUR CHANNEL. Arrgghh, racist rhetoric. Nonsense point. BRITAIN!',
+                          'heard' => 98,
+                          'echoes' => 9,
+                          'claps' => 91,
+                        ])
+                        -> save();
         }
 
 
@@ -44,9 +50,10 @@ class PostsTableSeeder extends Seeder
             $c = new Post();
             $c -> user_id = $users -> random() -> id;
             $c -> title = "I've said it before!";
-            $c -> content = "And I'll say it again. Love this website. I only ever hear my own views reflected. Epic.";
-            $a -> views = 10;
-            $a -> echoes = 10;
+            $c -> content = "And I'll say it again. Love this website. I only ever hear my own heard reflected. Epic.";
+            $c -> heard = 10;
+            $c -> echoes = 1;
+            $c -> claps = 9;
             $c -> save();
         }
 
@@ -57,8 +64,30 @@ class PostsTableSeeder extends Seeder
             $d = new Post();
             $d -> create(['user_id' => $users -> random() -> id,
                           'title' => 'Stupid LIBS!',
-                          'content' => 'Got em! Never see em on-line anymore! Probly cryin, snowflakes. LOL'
-                        ]) -> save();
+                          'content' => 'Got em! Never see em on-line anymore! Probly cryin, snowflakes. LOL',
+                          'heard' => 57,
+                          'echoes' => 17,
+                          'claps' => 52,
+                        ])
+                        -> save();
+        }
+
+        // Create original posts with a factory (250 for each user making 2 - 3 posts)
+        Post::factory()
+                -> count(250)
+                -> create();
+
+        // Create echoes of posts that have been echoed (i.e. reposted)
+        // NOTE this could be a nested loop for re-re-posted, but for simplicity no dummy echoes are echoed
+        $posts = Post::where('echoes' ,'>', 0)
+                    -> get();
+        foreach ($posts as $post) {
+            $postid = $post -> id;
+            Post::factory()
+                    -> count($post -> echoes)
+                    -> state(fn () => [ 'echoes' => 0,
+                                        'echoed' => $postid])
+                    -> create();
         }
     }
 }
