@@ -9,18 +9,15 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * These are include the users first_name,
+     * last_name, email address and password
      *
-     * USE THIS IN FACTORY TO BYPASS FILLABLE:
-     * User::factory()->create([
-     * 'administrator_flag' => true,
-     * ]);
+     * @var list<string>
      */
     protected $fillable = [
         'first_name',
@@ -32,10 +29,15 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
+     * These include the user email address, password and administrator_flag
+     * to ensure that other users cannot discover these attributes
+     *
      * @var list<string>
      */
     protected $hidden = [
+        'email',
         'password',
+        'administrator_flag',
     ];
 
     public function posts()

@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -25,7 +23,6 @@ class UsersTableSeeder extends Seeder
         $a -> password = bcrypt("SYSarchitect!");
         $a -> save();
 
-
         // Create new admin User with forceFill (bypasses $fillable)
         $b = new User();
         $b -> forceFill(['email' => 'admin@echochamber.com',
@@ -33,7 +30,6 @@ class UsersTableSeeder extends Seeder
                          'password' => bcrypt('admin')
                         ])
                         -> save();
-
 
         // Create new regular User with Direct Assignment (bypasses $fillable)
         $c = new User();
@@ -43,7 +39,6 @@ class UsersTableSeeder extends Seeder
         $c -> administrator_flag = false;
         $c -> password = bcrypt("password");
         $c -> save();
-
 
         // Create new regular User with forceFill (bypasses $fillable)
         $d = new User();
@@ -58,7 +53,7 @@ class UsersTableSeeder extends Seeder
 
         ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
 
-        // Generate default passwords outside of factory to speed-up
+        // Generate default passwords outside of factory to speed-up seeding
         // (previously took 40s to create User table)
         $default_fake_password = bcrypt( fake() -> password() );
         $default_admin_password = bcrypt( "SuperStr0ng4dm1nP4ss" );

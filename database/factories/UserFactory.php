@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -14,7 +12,7 @@ class UserFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * This will return a User with some restrictions:
+     * This will return a faked User with some restrictions:
      *  - User email must be unique
      *
      * @return array<string, mixed>

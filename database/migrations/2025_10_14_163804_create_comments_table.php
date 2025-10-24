@@ -15,11 +15,9 @@ return new class extends Migration
 
             $table -> id();
             $table -> foreignId('user_id')
-                        -> constrained()                 // Shortcut for references('id')->on('users')
-                        -> onDelete('cascade');   // Delete comments if the user is deleted
+                        -> constrained();          //Shortcut for references('id')->on('users')->onDelete('cascade')->onUpdate('cascade')
             $table -> foreignId('post_id')
-                        -> constrained()
-                        -> onDelete('cascade');  // Delete comments if the post is deleted
+                        -> constrained();          //Shortcut for references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade')
             $table -> string('content');
             $table -> integer('heard');
             $table -> integer('claps');

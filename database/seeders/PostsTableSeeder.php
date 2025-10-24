@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Post;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PostsTableSeeder extends Seeder
@@ -86,16 +85,15 @@ class PostsTableSeeder extends Seeder
 
         // Create echoes of posts that have been echoed (i.e. reposted)
         // Factory uses withUserCount Helper Method
+        // Factory uses withEcho Helper Method
         // NOTE this could be a nested loop for re-re-posted, but for simplicity no dummy echoes are echoed
         $posts = Post::where('echoes' ,'>', 0)
                     -> get();
         foreach ($posts as $post) {
-            $postid = $post -> id;
             Post::factory()
                     -> withUserCount($user_count)
+                    -> withEcho($post)
                     -> count($post -> echoes)
-                    -> state(fn () => [ 'echoes' => 0,
-                                        'echoed' => $postid])
                     -> create();
         }
     }

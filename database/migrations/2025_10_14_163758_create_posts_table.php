@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table -> id();
-            $table -> foreignId('user_id')     // The author
-                        -> constrained()                 // ?????   Shortcut for references('id')->on('users')   ?????
-                        -> onDelete('cascade');   // Delete posts if the user is deleted
+            $table -> foreignId('user_id')  // The author
+                        -> constrained();          // Shortcut for references('id')->on('users')->onDelete('cascade')->onUpdate('cascade')
             $table -> string('title');
             $table -> string('content');
             $table -> integer('heard');
-            $table -> unsignedBigInteger('echoed')
-                        -> nullable();
+            $table -> unsignedBigInteger('echoed')   // unsignedBigInteger is type of id()
+                        -> nullable();                      // Must be nullable as post may not be echoed
             $table -> integer('echoes');
             $table -> integer('claps');
             $table -> timestamps();

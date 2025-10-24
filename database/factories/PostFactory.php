@@ -13,7 +13,7 @@ class PostFactory extends Factory
     /**
      * Define the model's default state.
      *
-     * This will return a post with some restrictions:
+     * This will return a faked post with some restrictions:
      * - Post is from a random User (FK: user_id)
      * - Post can only be 'heard' by at most the number of users (set in Seeder, otherwise max=1)
      * - Post can only be echoed by at most a tenth of users (to reduce entries in DB)
@@ -23,9 +23,9 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
-        // Get heard from withUserCount Factory Helper Method using $this->attributes
-        // otherwise fake it manually as 100
-        $heard = $this -> attributes['heard'] ?? 100;
+        // Fake heard manually as 100
+        // Should be overwritten using withUserCount Factory Helper Method
+        $heard = 100;
 
         // Get a random user by sorting table randomly and taking first ID
         $user_id = User::query() -> inRandomOrder() -> value('id');
@@ -51,8 +51,36 @@ class PostFactory extends Factory
     public function withUserCount($user_count)
     {
         return $this
-                -> state(fn () => ['heard' => fake()
-                                            -> numberBetween(0, $user_count)
-                ]);
+                -> state(function (array $attributes) use ($user_count) {
+                    $heard = fake()->numberBetween(0, $user_count);
+                    return [
+                        'heard' => $heard,
+                        'echoes' => fake()->numberBetween(0, $heard / 10),
+                        'claps' => fake()->numberBetween(0, $heard / 2),
+                    ];
+        });
+    }
+
+    /**
+     * Helper Method that takes the original post and copies it.
+     *
+     * Takes post as input and copies the title and content
+     * Sets echoes as 0 to avoid having to echo echoes
+     * Sets the post id as echoed
+     *
+     * @param $post PostFactory
+     * @return PostFactory
+     */
+    public function withEcho($post)
+    {
+        return $this
+            -> state(function (array $attributes) use ($post) {
+                return [
+                    'title' => $post -> title,
+                    'content' => $post -> content,
+                    'echoes' => 0,
+                    'echoed' => $post -> id,
+                ];
+            });
     }
 }
