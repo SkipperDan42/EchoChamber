@@ -24,7 +24,7 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
-        // Get a random user by sorting table randomly and taking first ID
+        // Get a random users by sorting table randomly and taking first ID
         $user_id = User::query() -> inRandomOrder() -> value('id');
 
         // Get a random post by sorting table randomly and taking first ID

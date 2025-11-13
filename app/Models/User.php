@@ -29,7 +29,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * These include the user email address, password and administrator_flag
+     * These include the users email address, password and administrator_flag
      * to ensure that other users cannot discover these attributes
      *
      * @var list<string>

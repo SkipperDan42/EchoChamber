@@ -18,7 +18,7 @@ class Comment extends Model
     protected $fillable = [
         'content',
         'heard',
-        'claps',
+        'claps'
     ];
 
     public function user()

@@ -27,13 +27,17 @@ class PostFactory extends Factory
         // Should be overwritten using withUserCount Factory Helper Method
         $heard = 100;
 
-        // Get a random user by sorting table randomly and taking first ID
+        // Get a random users by sorting table randomly and taking first ID
         $user_id = User::query() -> inRandomOrder() -> value('id');
 
         return [
             'user_id' => $user_id,
             'title' => fake() -> sentence(),
             'content' => fake() -> paragraph(),
+            'media' => 'https://picsum.photos/id/' .
+                fake()->unique()->numberBetween(1, 1084) . // All available images on picsum
+                '/' . fake()->numberBetween(240, 1200) .
+                '/' . fake()->numberBetween(120, 900),
             'heard' => $heard,
             'echoes' => fake() -> numberBetween(0, $heard / 10),
             'claps' => fake() -> numberBetween(0, $heard / 2),
@@ -41,7 +45,7 @@ class PostFactory extends Factory
     }
 
     /**
-     * Helper Method that uses the user count to calculate heard.
+     * Helper Method that uses the users count to calculate heard.
      *
      * Takes user_count as input and fakes a random number between 0 and user_count
      *
@@ -78,6 +82,7 @@ class PostFactory extends Factory
                 return [
                     'title' => $post -> title,
                     'content' => $post -> content,
+                    'media' => $post -> media,
                     'echoes' => 0,
                     'echoed' => $post -> id,
                 ];

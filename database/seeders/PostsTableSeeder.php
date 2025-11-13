@@ -43,7 +43,7 @@ class PostsTableSeeder extends Seeder
                         -> save();
         }
 
-        // Create new Post (for random user) with Direct Assignment
+        // Create new Post (for random users) with Direct Assignment
         $users = User::all();
         if ($users) {
             $c = new Post();
@@ -56,7 +56,7 @@ class PostsTableSeeder extends Seeder
             $c -> save();
         }
 
-        // Create new Post (for random user) with Create
+        // Create new Post (for random users) with Create
         $users = User::all();
         if ($users) {
             $d = new Post();
@@ -73,10 +73,10 @@ class PostsTableSeeder extends Seeder
 
         ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
 
-        // Get user count and pass to a Factory Helper Method to reduce DB queries
+        // Get users count and pass to a Factory Helper Method to reduce DB queries
         $user_count = User::all() -> count();
 
-        // Create original posts with a factory (250 for each user making 2 - 3 posts)
+        // Create original posts with a factory (250 for each users making 2 - 3 posts)
         // Factory uses withUserCount Helper Method
         Post::factory()
                 -> withUserCount($user_count)

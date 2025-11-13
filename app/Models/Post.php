@@ -18,10 +18,11 @@ class Post extends Model
     protected $fillable = [
         'title',
         'content',
+        'media',
         'heard',
         'echoed',
         'echoes',
-        'claps',
+        'claps'
     ];
 
     public function user()

@@ -75,6 +75,6 @@
     </div>
 
     <!-- RUN JS SCRIPTS -->
-    <script src="{{ asset('js/bootstrap.bundle.js') }}" defer></script>
+    <script src="{{ asset('js/old_bootstrap.bundle.js') }}" defer></script>
 </body>
 </html>
