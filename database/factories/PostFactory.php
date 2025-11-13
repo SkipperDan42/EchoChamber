@@ -55,14 +55,14 @@ class PostFactory extends Factory
     public function withUserCount($user_count)
     {
         return $this
-                -> state(function (array $attributes) use ($user_count) {
-                    $heard = fake()->numberBetween(0, $user_count);
-                    return [
-                        'heard' => $heard,
-                        'echoes' => fake()->numberBetween(0, $heard / 10),
-                        'claps' => fake()->numberBetween(0, $heard / 2),
-                    ];
-        });
+            -> state(function (array $attributes) use ($user_count) {
+                $heard = fake()->numberBetween(0, $user_count);
+                return [
+                    'heard' => $heard,
+                    'echoes' => fake()->numberBetween(0, $heard / 10),
+                    'claps' => fake()->numberBetween(0, $heard / 2),
+                ];
+            });
     }
 
     /**

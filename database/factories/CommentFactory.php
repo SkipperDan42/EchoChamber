@@ -33,7 +33,7 @@ class CommentFactory extends Factory
         // Get post from post_id and generate comment heard value by using heard value of post
         $post = Post::query() -> find($post_id);
         $heard = fake()
-                    -> numberBetween(0, $post -> heard);
+            -> numberBetween(0, $post -> heard);
 
         return [
             'user_id' => $user_id,
