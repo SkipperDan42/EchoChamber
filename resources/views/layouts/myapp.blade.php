@@ -15,11 +15,11 @@
 </head>
 
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-    <nav class="navbar navbar-expand-lg navbar-dark nav-bg">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
 
             <!-- NAVBAR ICON -->
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="/">
                 <img src="{{ asset('images/title.png') }}" alt="Logo" width="140" height="70" class="d-inline-block align-text-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -29,15 +29,19 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- ALL NAVBAR BUTTONS HIDDEN BEHIND LOGIN -->
+                @auth
+
                 <!-- NAVBAR LEFT SIDE -->
                 <ul class="navbar-nav mx-auto fs-4">
                     <li class="nav-item">
-                        <a class="nav-link me-5 @yield('nav_dashboard')" href="#">
+                        <a class="nav-link me-5 @yield('nav_dashboard')" href="/">
                             Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-5 @yield('nav_profile')" href="#">
+                        <a class="nav-link me-5 @yield('nav_profile')" href="/profile/{{$user = auth()->user()->id}}">
                             Profile
                         </a>
                     </li>
@@ -62,13 +66,19 @@
                                 </a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="#">
-                                    Log Out
-                                </a>
+                                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        Logout
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </li>
                 </ul>
+
+                @endauth
+
             </div>
         </div>
     </nav>

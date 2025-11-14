@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Post;
 use App\Rules\ImageUrl;
 use Illuminate\Http\Request;
@@ -11,9 +12,56 @@ class PostController extends Controller
     //
     public function feed()
     {
-        $posts = Post::with('user')->orderBy('created_at', 'desc')->paginate(5);
         //dd($projects);
-        return view('posts.feed', ['posts'=>$posts]);
+
+        // Get all posts with their users and comments preloaded. Paginate them to simplify loading
+        // !! NOTE that this uses the reddit trending algorithm as an SQLite query !!
+        // !! THIS QUERY WAS SOURCED FROM CHATGPT !!
+        $posts = Post::with(['user', 'comments'])
+                    ->selectRaw('
+                                posts.*,
+                                claps * 1.0 /
+                                POWER(
+                                    ((strftime("%s", "now") - strftime("%s", created_at)) / 3600) + 2,
+                                    1.5)
+                                AS trending_score')
+                    ->orderBy('trending_score', 'desc')
+                    ->paginate(5);
+
+        // Get the users of all echoed posts
+        $echoedIds = $posts
+                        ->pluck('echoed')
+                        ->filter()
+                        ->unique();
+        $echoedPosts = Post::with('user')
+                        ->whereIn('id', $echoedIds)
+                        ->get()
+                        ->keyBy('id');
+
+        return view('posts.feed', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
+    }
+
+    //
+    public function profile(User $user)
+    {
+
+        // Get all posts belonging to a user and comments preloaded. Paginate them to simplify loading
+        $posts = Post::with(['user', 'comments'])
+                    ->where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(5);
+
+        // Get the users of all echoed posts
+        $echoedIds = $posts
+                    ->pluck('echoed')
+                    ->filter()
+                    ->unique();
+        $echoedPosts = Post::with('user')
+                        ->whereIn('id', $echoedIds)
+                        ->get()
+                        ->keyBy('id');
+
+        return view('posts.profile', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
     }
 
     public function show(Post $post)

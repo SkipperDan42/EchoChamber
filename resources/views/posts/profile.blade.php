@@ -1,6 +1,11 @@
 @extends('layouts.myapp')
 
-@section('nav_dashboard', 'active')
+<!-- Change active page depending on if profile belongs to currently authenticated user -->
+@if ($posts->first()->user->id == auth()->user()->id)
+    @section('nav_profile', 'active')
+@else
+    @section('nav_dashboard', 'active')
+@endif
 
 @section('content')
 

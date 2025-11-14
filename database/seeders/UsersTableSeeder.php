@@ -16,6 +16,7 @@ class UsersTableSeeder extends Seeder
 
         // Create new admin User with Direct Assignment (bypasses $fillable)
         $a = new User();
+        $a -> username = "EchoDan";
         $a -> first_name = "Dan";
         $a -> last_name = "North";
         $a -> email = "2039924@echochamber.com";
@@ -25,7 +26,8 @@ class UsersTableSeeder extends Seeder
 
         // Create new admin User with forceFill (bypasses $fillable)
         $b = new User();
-        $b -> forceFill(['email' => 'admin@echochamber.com',
+        $b -> forceFill(['username' => 'admin',
+            'email' => 'admin@echochamber.com',
             'administrator_flag' => true,
             'password' => bcrypt('admin')
         ])
@@ -33,6 +35,7 @@ class UsersTableSeeder extends Seeder
 
         // Create new regular User with Direct Assignment (bypasses $fillable)
         $c = new User();
+        $c -> username = "Froggy";
         $c -> first_name = "Nigel";
         $c -> last_name = "Farage";
         $c -> email = "2pintNigel@ukip.co.uk";
@@ -42,7 +45,8 @@ class UsersTableSeeder extends Seeder
 
         // Create new regular User with forceFill (bypasses $fillable)
         $d = new User();
-        $d -> forceFill(['first_name' => 'alex',
+        $d -> forceFill(['username' => 'Jonsey',
+            'first_name' => 'alex',
             'last_name' => 'jones',
             'email' => 'aj@infowars.com',
             'administrator_flag' => false,
@@ -69,7 +73,8 @@ class UsersTableSeeder extends Seeder
         // Password is passed from outside Factory
         User::factory()
             -> count(3)
-            -> state(fn () => [  'email' => fake() -> userName() . '@echochamber.com',
+            -> state(fn () => [ 'username' => $username = fake()->userName(),
+                'email' => $username . '@echochamber.com',
                 'administrator_flag' => true,
                 'password' => $default_admin_password])
             -> create();

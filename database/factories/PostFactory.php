@@ -41,6 +41,7 @@ class PostFactory extends Factory
             'heard' => $heard,
             'echoes' => fake() -> numberBetween(0, $heard / 10),
             'claps' => fake() -> numberBetween(0, $heard / 2),
+            'created_at' => fake() -> dateTimeBetween('-1 weeks', 'now'),
         ];
     }
 
