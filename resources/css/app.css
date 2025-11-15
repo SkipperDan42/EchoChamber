@@ -12,11 +12,8 @@
 }
 
 /* Strongest override for bg-dark */
-.nav-bg,
-nav.navbar.bg-dark,
-nav.navbar.navbar-dark,
-nav.navbar.navbar-expand-lg.bg-dark {
-    background-color: #000 !important; /* pure black */
+nav.navbar.navbar-dark.bg-dark {
+    background-color: #000 !important;
     border-color: transparent !important;
 }
 
