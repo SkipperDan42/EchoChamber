@@ -71,7 +71,14 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create');
+        $post = null;
+        return view('posts.create', ['post'=>$post]);
+    }
+
+
+    public function edit(Post $post)
+    {
+        return view('posts.create', ['post'=>$post]);
     }
 
     /**
@@ -82,27 +89,51 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate the form fields
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',  // Must be short
-            'content' => 'nullable|string|max:7000',  // Roughly 1000 words
-            'media' => ['nullable', 'url', new ImageUrl, 'max:255'],  // URL must point to a valid Image
-            'heard' => 'required|integer',
-            'echoed' => 'required|integer|exists:posts,id', // Must reference a post upon creation
-            'echoes' => 'required|integer',
-            'claps' => 'required|integer'
+            'title' => 'required|string|max:255',
+            'content' => 'nullable|string|max:7000',
+            'media' => ['nullable', 'url', new ImageUrl, 'max:255'],
+            'id'    => 'nullable|integer|exists:posts,id', // Hidden for edits only
         ]);
 
-        $a = new Post();
-        $a->title = $validatedData['title'];
-        $a->content = $validatedData['content'];
-        $a->media = $validatedData['media'];
-        $a->heard = $validatedData['heard'];
-        $a->echoed = $validatedData['echoed'];
-        $a->echoes = $validatedData['echoes'];
-        $a->claps = $validatedData['claps'];
-        $a->save();
+        // Check if id is empty (i.e. if post is being edited)
+        if (!empty($validatedData['id'])) {
+            $original_post = Post::findOrFail($validatedData['id']);
 
-        session()->flash('message','Posted');
+            // Edit if authenticated user owns the post
+            if ($original_post->user_id == auth()->id()) {
+                $post = $original_post;
+            }
+            // Echo if authenticated user does not own the post
+            else {
+                $post = new Post();
+                $post->user_id = auth()->id();
+                $post->heard = 0;
+                $post->echoed = $original_post->user_id;
+                $post->echoes = 0;
+                $post->claps = 0;
+            }
+        }
+        // Else create new post
+        else {
+
+            $post = new Post();
+            $post->user_id = auth()->id();
+            $post->heard = 0;
+            $post->echoed = null;
+            $post->echoes = 0;
+            $post->claps = 0;
+        }
+
+        // Set filled form fields
+        $post->title   = $validatedData['title'];
+        $post->content = $validatedData['content'] ?? null;
+        $post->media   = $validatedData['media'] ?? null;
+        $post->save();
+
+        // Success confirmation and redirect
+        session()->flash('message', $validatedData['id'] ? 'Post updated' : 'Posted');
         return redirect()->route('posts.feed');
     }
 

@@ -3,17 +3,18 @@
 @section('nav_profile', 'active')
 
 @section('content')
-
     <br>
 
     <div>
         <form method="POST" action="{{route('posts.store')}}">
             @csrf
+
+            {{-- Input for Post Title --}}
             <div class="form-group">
                 <p>Title:
                     <input type="text"
-                           title="title"
-                           value="{{old("title")}}"
+                           name="title"
+                           value="{{ old("title", $post->title ?? "") }}"
                     >
                 </p>
 
@@ -22,11 +23,13 @@
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
+
+            {{-- Input for Post Content --}}
             <div class="form-group">
                 <p>Content:
                     <input type="text"
                            name="content"
-                           value="{{old("content")}}"
+                           value="{{old("content", $post->content ?? "")}}"
                     >
                 </p>
 
@@ -35,11 +38,13 @@
                 <div class="alert alert-danger">{{ $message }}</div>
                 @enderror
             </div>
+
+            {{-- Input for Media Link --}}
             <div class="form-group">
                 <p>Media:
                     <input type="text"
                            name="media"
-                           value="{{old("media")}}"
+                           value="{{old("media", $post->media ?? "")}}"
                     >
                 </p>
 
@@ -49,8 +54,14 @@
                 @enderror
             </div>
 
+            {{-- Hidden input to pass edited post data --}}
+            <input type="hidden" name="id" value="{{ $post->id ?? null }}">
+
+            {{-- Submit and Cancel buttons --}}
             <input type="submit" value="Submit">
-            <a href="{{route('posts.feed')}}">Cancel</a>
+            <a href="{{route('posts.feed')}}">
+                Cancel
+            </a>
         </form>
     </div>
 

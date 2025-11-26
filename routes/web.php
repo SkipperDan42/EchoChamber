@@ -9,9 +9,22 @@ Route::get('/', [PostController::class, 'feed'])
 
 //VIEW: Profile
 Route::get('/profile/{user}', [PostController::class, 'profile'])
-    ->name('post.profile');
+    ->name('post.profile')->middleware('auth');
 
 //LOGIN
-Route:: middleware(['auth' ])->group(function(){
-    return view('posts.feed');
-    })->name('login');
+Route::get('/login', function () {
+    return view('auth.login');
+})->middleware('guest')->name('login');
+
+
+//CREATE: Post
+Route::get('/posts/create', [PostController::class, 'create'])
+    ->name('posts.create')->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])
+    ->name('posts.store')->middleware('auth');
+
+//EDIT: Post
+Route::get('/posts/edit/{post}', [PostController::class, 'edit'])
+    ->name('posts.edit')->middleware('auth');
+Route::post('/posts', [PostController::class, 'store'])
+    ->name('posts.store')->middleware('auth');
