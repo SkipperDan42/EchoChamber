@@ -25,14 +25,6 @@
                     </div>
 
                     <div class="col-auto col-sm-auto">
-                        <a class="btn btn-warning"
-                           href=""
-                           role="button">
-                            &#x1F4DD; Change Password
-                        </a>
-                    </div>
-
-                    <div class="col-auto col-sm-auto">
                         <a class="btn btn-danger"
                            href=""
                            role="button">

@@ -10,6 +10,8 @@
 
 @section('content')
 
+
+
     <!-- CARD FOR POST -->
     <div class="card shadow-sm mx-auto" style="max-width: 600px;">
 

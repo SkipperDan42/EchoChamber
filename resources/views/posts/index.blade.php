@@ -8,11 +8,18 @@
     @section('nav_dashboard', 'active')
 @endif
 
-@section('content')
-
-    <div>
+@section('buttons')
+    <div class="col text-center">
         <a class="btn btn-primary" href="/posts/create" role="button">Start Shouting</a>
     </div>
+    <div class="col text-end">
+        <a class="btn btn-primary" href="/posts/create" role="button">Start Shouting</a>
+    </div>
+@endsection
+
+@section('content')
+
+
 
     @foreach ($posts as $post)
 

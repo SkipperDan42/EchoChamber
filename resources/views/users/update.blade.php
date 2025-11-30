@@ -22,7 +22,9 @@
                            value="{{ old('username', $user->username) ?? ""}}"
                     >
                     @error('username')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-3">
@@ -36,7 +38,9 @@
                            value="{{ old('first_name', $user->first_name) ?? ""}}"
                     >
                     @error('first_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-3">
@@ -50,7 +54,9 @@
                            value="{{ old('last_name', $user->last_name) ?? ""}}"
                     >
                     @error('last_name')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-3">
@@ -64,10 +70,61 @@
                            value="{{ old('email', $user->email) ?? ""}}"
                     >
                     @error('email')
-                        <div class="alert alert-danger">{{ $message }}</div>
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary">Register</button>
+                <div>
+                    <br>
+                    <p style="color:red">
+                        Leave the password field empty to keep as is.
+                    </p>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">
+                        Password
+                    </label>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           name="password"
+                    >
+                    @error('password')
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="password_confirmation" class="form-label">
+                        Confirm Password
+                    </label>
+                    <input type="password"
+                           class="form-control"
+                           id="password_confirmation"
+                           name="password_confirmation"
+                    >
+                    @error('password_confirmation')
+                        <div class="alert alert-danger">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="row align-items-cente">
+                    <div class="col text-start">
+                        <button type="submit" class="btn btn-success">
+                            Update
+                        </button>
+                    </div>
+                    <div class="col text-end">
+                        <a class="btn btn-danger"
+                           href="{{route("users.details", $user->id)}}">
+                            Back
+                        </a>
+                    </div>
+
+                </div>
             </form>
         </div>
     </div>

@@ -52,17 +52,17 @@ Route::get('/login', function () {
 
 //USER: Posts
 Route::get('/user/{user}/posts', [PostController::class, 'posts'])
-    ->name('user.posts')
+    ->name('users.posts')
     ->middleware('auth');
 
 //USERS: Details
 Route::get('/user/{user}/details', [UserController::class, 'details'])
-    ->name('user.details')
+    ->name('users.details')
     ->middleware('auth');
 
 //USERS: Update
 Route::get('/user/{user}/update', [UserController::class, 'update'])
-    ->name('user.update')
+    ->name('users.update')
     ->middleware('auth');
 
 //USERS: Store

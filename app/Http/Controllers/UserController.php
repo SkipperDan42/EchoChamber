@@ -23,7 +23,7 @@ class UserController extends Controller
         }
         else {
             return redirect()
-                ->route('user.details', ['user'=>$user])
+                ->route('users.details', ['user'=>$user])
                 ->with('danger', 'You may not update this user!');
         }
     }
@@ -34,13 +34,22 @@ class UserController extends Controller
             'username' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'password'    => 'nullable|string|min:8|confirmed', // password is optional
         ]);
+
+        // Hash the password if entered and validated
+        if (!empty($validated['password'])) {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+        // Don't update password if left blank
+        else {
+            unset($validated['password']);
+        }
 
         $user->update($validated);
 
         return redirect()
-            ->route('user.details', $user)
+            ->route('users.details', $user)
             ->with('message', 'User updated successfully.');
     }
 
