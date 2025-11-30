@@ -42,7 +42,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link me-5 @yield('nav_profile')" href="/profile/{{$user = auth()->user()->id}}">
+                        <a class="nav-link me-5 @yield('nav_profile')"
+                           href="/user/{{$user = auth()->user()->id}}/posts"
+                        >
                             Monologue
                         </a>
                     </li>
@@ -90,6 +92,11 @@
     <!-- FLASH MESSAGE AT PAGE TOP -->
     @if(session('message'))
         <div class="alert alert-success" role="alert">{{session('message')}}</div>
+    @endif
+
+    <!-- FLASH MESSAGE AT PAGE TOP -->
+    @if(session('danger'))
+        <div class="alert alert-danger" role="alert">{{session('danger')}}</div>
     @endif
 
     <!-- GENERAL ERROR DISPLAYS AT PAGE TOP -->

@@ -32,7 +32,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Fortify::createUsersUsing(CreateNewUser::class);
-        //Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         //Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         //Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         //Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
@@ -51,9 +51,7 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.register');
         });
 
-        Fortify::updateUserProfileInformationUsing(function () {
-            return view('auth.register');
-        });
+        Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
 
         /**
         RateLimiter::for('two-factor', function (Request $request) {

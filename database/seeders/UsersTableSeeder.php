@@ -35,10 +35,10 @@ class UsersTableSeeder extends Seeder
 
         // Create new regular User with Direct Assignment (bypasses $fillable)
         $c = new User();
-        $c -> username = "Froggy";
+        $c -> username = "NigelTheRacistSchoolboy";
         $c -> first_name = "Nigel";
         $c -> last_name = "Farage";
-        $c -> email = "2pintNigel@ukip.co.uk";
+        $c -> email = "TwoPintNigel@ukip.co.uk";
         $c -> administrator_flag = false;
         $c -> password = bcrypt("password");
         $c -> save();

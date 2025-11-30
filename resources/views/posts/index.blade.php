@@ -32,8 +32,10 @@
                 <!-- Profile of Post Owner -->
                 <div class="row align-items-center">
                     <div class="col text-start fw-bold text-primary">
-                        <a class= "btn btn-info" href="/profile/{{$post->user->id}}"
-                           onClick="event.stopPropagation()">
+                        <a class= "btn btn-info"
+                           href="/user/{{$post->user->id}}/posts"
+                           onClick="event.stopPropagation()"
+                        >
                             &#x1F464;
                             {{ $post->user->username ?? 'Unknown' }}
                         </a>
@@ -43,7 +45,7 @@
                     @if ($post->echoed && isset($echoedPosts[$post->echoed]))
                         <div class="col text-center text-muted small">
                             <a class= "btn btn-info"
-                               href="/profile/{{ $echoedPosts[$post->echoed]->user->id }}"
+                               href="/user/{{ $echoedPosts[$post->echoed]->user->id }}/posts"
                                onClick="event.stopPropagation()">
                                 &#x1F5E3;
                                 {{ $echoedPosts[$post->echoed]->user->username }}

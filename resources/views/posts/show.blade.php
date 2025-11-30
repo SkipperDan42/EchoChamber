@@ -85,7 +85,7 @@
             <!-- Profile of Post Owner -->
             <div class="row align-items-center">
                 <div class="col text-start fw-bold text-primary">
-                    <a class= "btn btn-info" href="/profile/{{$post->user->id}}">
+                    <a class= "btn btn-info" href="/user/{{$post->user->id}}/posts">
                         &#x1F464;
                         {{ $post->user->username ?? 'Unknown' }}
                     </a>
@@ -94,7 +94,7 @@
                 <!-- Profile of Original Post Owner if Repost -->
                 @if ($post->echoed)
                     <div class="col text-center text-muted small">
-                        <a class= "btn btn-info" href="/profile/{{$echoedPost->user->id }}">
+                        <a class= "btn btn-info" href="/user/{{$echoedPost->user->id }}/posts">
                             &#x1F5E3;
                             {{ $echoedPost->user->username }}
                         </a>
@@ -162,7 +162,7 @@
                         <div class="d-flex flex-column gap-2 align-items-stretch">
 
                             <div>
-                                <a class="btn btn-info w-100" href="/profile/{{$comment->user->id}}">
+                                <a class="btn btn-info w-100" href="/user/{{$comment->user->id}}/posts">
                                     {{ $comment->user->username ?? 'Unknown' }}
                                 </a>
                             </div>
