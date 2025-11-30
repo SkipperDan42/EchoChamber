@@ -1,18 +1,26 @@
 @extends('layouts.myapp')
 
 @section('content')
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card shadow-sm mx-auto"
+         style="max-width: 600px;"
+    >
         <!-- Header -->
         <div class="card-header d-flex align-items-center bg-white border-bottom-0">
-            <h1>Update Account Details</h1>
+            <h1>
+                Update Account Details
+            </h1>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('users.store', $user->id) }}">
+            <form method="POST"
+                  action="{{ route('users.store', $user->id) }}"
+            >
                 @csrf
                 @method('PUT')
 
                 <div class="mb-3">
-                    <label for="username" class="form-label">
+                    <label for="username"
+                           class="form-label"
+                    >
                         Username
                     </label>
                     <input type="text"
@@ -28,7 +36,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="first_name" class="form-label">
+                    <label for="first_name"
+                           class="form-label"
+                    >
                         First Name
                     </label>
                     <input type="text"
@@ -44,7 +54,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="last_name" class="form-label">
+                    <label for="last_name"
+                           class="form-label"
+                    >
                         Last Name
                     </label>
                     <input type="text"
@@ -60,7 +72,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="email" class="form-label">
+                    <label for="email"
+                           class="form-label"
+                    >
                         Email
                     </label>
                     <input type="email"
@@ -82,7 +96,9 @@
                     </p>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">
+                    <label for="password"
+                           class="form-label"
+                    >
                         Password
                     </label>
                     <input type="password"
@@ -97,7 +113,9 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="password_confirmation" class="form-label">
+                    <label for="password_confirmation"
+                           class="form-label"
+                    >
                         Confirm Password
                     </label>
                     <input type="password"
@@ -113,13 +131,16 @@
                 </div>
                 <div class="row align-items-cente">
                     <div class="col text-start">
-                        <button type="submit" class="btn btn-success">
+                        <button type="submit"
+                                class="btn btn-success"
+                        >
                             Update
                         </button>
                     </div>
                     <div class="col text-end">
                         <a class="btn btn-danger"
-                           href="{{route("users.details", $user->id)}}">
+                           href="{{ route("users.details", $user->id) }}"
+                        >
                             Back
                         </a>
                     </div>

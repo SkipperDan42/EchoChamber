@@ -13,24 +13,44 @@
 
     <!-- Styles / Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 </head>
 
-<div class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-    <div class="sticky-top" style="background-color:white; border-bottom:2px solid #000000">
+<body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+    <div class="sticky-top"
+         style="background-color:white; border-bottom:2px solid #000000"
+    >
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
 
                 <!-- NAVBAR ICON -->
-                <a class="navbar-brand" href="/">
-                    <img src="{{ asset('images/title.png') }}" alt="Logo" width="140" height="70" class="d-inline-block align-text-top">
+                <a class="navbar-brand"
+                   href="{{route("posts.index")}}"
+                >
+                    <img src="{{ asset('images/title.png') }}"
+                         alt="Logo"
+                         width="140"
+                         height="70"
+                         class="d-inline-block align-text-top">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse"
+                     id="navbarSupportedContent">
 
                     <!-- ALL NAVBAR BUTTONS HIDDEN BEHIND LOGIN -->
                     @auth
@@ -38,20 +58,22 @@
                     <!-- NAVBAR LEFT SIDE -->
                     <ul class="navbar-nav mx-auto fs-4">
                         <li class="nav-item">
-                            <a class="nav-link me-5 @yield('nav_dashboard')" href="/">
+                            <a class="nav-link me-5 @yield('nav_dashboard')"
+                               href="{{route("posts.index")}}"
+                            >
                                 The Chamber
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link me-5 @yield('nav_profile')"
-                               href="/user/{{$user = auth()->user()->id}}/posts"
+                               href= "{{route("users.posts", $user = auth()->user()->id)}}"
                             >
                                 Monologue
                             </a>
                         </li>
                     </ul>
 
-                    <!-- NAVBAR RIGHT SIDE -->
+                    <!-- NAVBAR RIGHT SIDE - TOOLS DROPDOWN -->
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown fs-4">
                             <a class="nav-link dropdown-toggle @yield('nav_settings')"
@@ -62,13 +84,28 @@
                                 Tools
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end fs-5">
+
+                                <!-- All user view for admin -->
+                                @if (auth()->user()->administrator_flag)
+                                    <li>
+                                        <a class="dropdown-item @yield('nav_all_users')"
+                                           href="{{route("users.index")}}"
+                                        >
+                                            All Users
+                                        </a>
+                                    </li>
+                                @endif
+
+                                <!-- Personal details -->
                                 <li>
-                                    <a class="dropdown-item @yield('nav_user_details')"
+                                    <a class="dropdown-item @yield('nav_statistics')"
                                        href="{{route("users.details", auth()->user()->id)}}"
                                     >
-                                        Boor Hole
+                                        My Details
                                     </a>
                                 </li>
+
+                                <!-- Personal statistics -->
                                 <li>
                                     <a class="dropdown-item @yield('nav_statistics')"
                                        href="{{route("users.details", auth()->user()->id)}}"
@@ -76,6 +113,8 @@
                                         Alternative Facts
                                     </a>
                                 </li>
+
+                                <!-- Log out -->
                                 <li>
                                     <form action="{{ route('logout') }}"
                                           method="POST"
@@ -99,6 +138,7 @@
             </div>
         </nav>
 
+
         <!-- FLASH MESSAGE AT PAGE TOP -->
         @if(session('message'))
             <div class="alert alert-success my-2 mx-1"
@@ -106,6 +146,7 @@
                 {{session('message')}}
             </div>
         @endif
+
 
         <!-- FLASH DANGER AT PAGE TOP -->
         @if(session('danger'))
@@ -115,11 +156,16 @@
             </div>
         @endif
 
+
         <!-- BUTTON BAR AT PAGE TOP -->
+        <!-- Buttons hidden behind login-->
+        @auth
         <div class="row align-items-center my-2 mx-1">
 
+
+
             <!-- Back button is always present -->
-            <div class="col text-start">=
+            <div class="col text-start">
                 <a class="btn btn-secondary"
                         href="{{ url()->previous() }}"
                 >
@@ -130,11 +176,15 @@
             <!-- Other buttons may be added per page -->
             @yield('buttons')
         </div>
+        @endauth
     </div>
+
+    <br>
 
     <div>
         @yield('content')
     </div>
+
 
     <!-- RUN JS SCRIPTS -->
     <!-- Alert fade - code here is not my own work, but edited by me -->

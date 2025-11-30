@@ -8,26 +8,30 @@
 
 @section('content')
     <!-- CARD FOR POST -->
-    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+    <div class="card shadow-sm mx-auto"
+         style="max-width: 600px;"
+    >
 
         <!-- If Auth User is this User or Admin then Update Details and Change Password options -->
         @if ($user->id == auth()->user()->id || auth()->user()->administrator_flag)
             <!-- Header -->
             <div class="card-header bg-white">
                 <!-- Edit Buttons -->
-                <div class="row justify-content-between align-items-center mb-2 py-2">
+                <div class="row justify-content-between align-items-center py-2">
                     <div class="col-auto col-sm-auto">
                             <a class="btn btn-warning"
-                               href="/user/{{$user->id}}/update"
-                               role="button">
+                               href="{{ route("users.update", $user->id) }}"
+                               role="button"
+                            >
                                 &#x1F4DD; Update Details
                             </a>
                     </div>
 
                     <div class="col-auto col-sm-auto">
                         <a class="btn btn-danger"
-                           href=""
-                           role="button">
+                           href="{{ route("users.delete", $user->id) }}"
+                           role="button"
+                        >
                             &#x1F5D1; Delete Account
                         </a>
                     </div>

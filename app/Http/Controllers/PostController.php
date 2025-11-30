@@ -9,61 +9,6 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // DEPRECATED METHOD FOR LOADING FEED
-    public function feed()
-    {
-        //dd($projects);
-
-        // Get all posts with their users and comments preloaded. Paginate them to simplify loading
-        // !! NOTE that this uses the reddit trending algorithm as an SQLite query !!
-        // !! THIS QUERY WAS SOURCED FROM CHATGPT !!
-        $posts = Post::with(['user', 'comments'])
-                    ->selectRaw('
-                                posts.*,
-                                claps * 1.0 /
-                                POWER(
-                                    ((strftime("%s", "now") - strftime("%s", created_at)) / 3600) + 2,
-                                    1.5)
-                                AS trending_score')
-                    ->orderBy('trending_score', 'desc')
-                    ->paginate(5);
-
-        // Get the users of all echoed posts
-        $echoedIds = $posts
-                        ->pluck('echoed')
-                        ->filter()
-                        ->unique();
-        $echoedPosts = Post::with('user')
-                        ->whereIn('id', $echoedIds)
-                        ->get()
-                        ->keyBy('id');
-
-        return view('posts.index', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
-    }
-
-    // DEPRECATED METHOD FOR LOADING PROFILE
-    public function profile(User $user)
-    {
-
-        // Get all posts belonging to a user and comments preloaded. Paginate them to simplify loading
-        $posts = Post::with(['user', 'comments'])
-                    ->where('user_id', $user->id)
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(5);
-
-        // Get the users of all echoed posts
-        $echoedIds = $posts
-                    ->pluck('echoed')
-                    ->filter()
-                    ->unique();
-        $echoedPosts = Post::with('user')
-                        ->whereIn('id', $echoedIds)
-                        ->get()
-                        ->keyBy('id');
-
-        return view('posts.profile', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
-    }
-
     // Method loads posts either from all users (the feed)
     // or from a single user (a profile)
     // depending on the route used (and whether a user is provided)
@@ -73,7 +18,7 @@ class PostController extends Controller
         if ($user === null) {
             // Get all posts with their users and comments preloaded. Paginate them to simplify loading
             // !! NOTE that this uses the reddit trending algorithm as an SQLite query !!
-            // !! THIS QUERY WAS SOURCED FROM CHATGPT !!
+            // !! THIS QUERY IS NOT MY OWN WORK !!
             $posts = Post::with(['user', 'comments'])
                 ->selectRaw('
                                 posts.*,
@@ -214,7 +159,8 @@ class PostController extends Controller
     Public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('posts.index')
-            ->with('message','Post deleted');
+        return redirect()
+            ->route('posts.index')
+            ->with('danger','Post deleted');
     }
 }

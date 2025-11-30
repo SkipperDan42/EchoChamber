@@ -27,7 +27,10 @@
                     <!-- If Auth User is Admin they may clap their own Post -->
                     @if (auth()->user()->administrator_flag)
                         <div class="col-auto col-sm-auto">
-                            <form action="{{ route('posts.clap', $post) }}" method="POST" class="d-inline">
+                            <form action="{{ route('posts.clap', $post) }}"
+                                  method="POST"
+                                  class="d-inline"
+                            >
                                 @csrf
                                 <button class="btn btn-secondary">
                                     &#x1F44F; Clap
@@ -38,16 +41,18 @@
 
                     <div class="col-auto col-sm-auto">
                             <a class="btn btn-warning"
-                               href="/posts/{{ $post->id }}/edit"
-                               role="button">
+                               href="{{ route("posts.edit", $post->id) }}"
+                               role="button"
+                            >
                                 &#x1F4DD; Backpedal
                             </a>
                     </div>
 
                     <div class="col-auto col-sm-auto">
                         <a class="btn btn-danger"
-                           href="/posts/{{ $post->id }}/delete"
-                           role="button">
+                           href="{{ route("posts.delete", $post->id) }}"
+                           role="button"
+                        >
                             &#x1F5D1; Delete
                         </a>
                     </div>
@@ -55,7 +60,10 @@
                 <!-- If Auth User is not Post Owner then Clap and Echo options -->
                 @else
                     <div class="col-auto col-sm-auto">
-                        <form action="{{ route('posts.clap', $post) }}" method="POST" class="d-inline">
+                        <form action="{{ route('posts.clap', $post) }}"
+                              method="POST"
+                              class="d-inline"
+                        >
                             @csrf
                             <button class="btn btn-secondary">
                                 &#x1F44F; Clap
@@ -65,8 +73,9 @@
 
                     <div class="col-auto col-sm-auto">
                         <a class="btn btn-warning"
-                           href="/posts/{{ $post->id }}/edit"
-                           role="button">
+                           href="{{ route("posts.edit", $post->id) }}"
+                           role="button"
+                        >
                             &#x1F5E3; Echo
                         </a>
                     </div>
@@ -75,8 +84,9 @@
                     @if (auth()->user()->administrator_flag)
                         <div class="col-auto col-sm-auto">
                             <a class="btn btn-danger"
-                               href="/posts/{{ $post->id }}/delete"
-                               role="button">
+                               href="{{ route("posts.delete", $post->id) }}"
+                               role="button"
+                            >
                                 &#x1F5D1; Delete
                             </a>
                         </div>
@@ -87,7 +97,9 @@
             <!-- Profile of Post Owner -->
             <div class="row align-items-center">
                 <div class="col text-start fw-bold text-primary">
-                    <a class= "btn btn-info" href="/user/{{$post->user->id}}/posts">
+                    <a class= "btn btn-info"
+                       href="{{ route("users.posts", $post->user->id) }}"
+                    >
                         &#x1F464;
                         {{ $post->user->username ?? 'Unknown' }}
                     </a>
@@ -96,7 +108,9 @@
                 <!-- Profile of Original Post Owner if Repost -->
                 @if ($post->echoed)
                     <div class="col text-center text-muted small">
-                        <a class= "btn btn-info" href="/user/{{$echoedPost->user->id }}/posts">
+                        <a class= "btn btn-info"
+                           href="{{ route("users.posts", $echoedPost->user->id) }}"
+                        >
                             &#x1F5E3;
                             {{ $echoedPost->user->username }}
                         </a>
@@ -114,7 +128,9 @@
         @if ($post->media)
             <!-- Media -->
             <div  class="border-bottom">
-                <img src="{{ $post->media }}" class="card-img-top" alt="Post image">
+                <img src="{{ $post->media }}"
+                     class="card-img-top"
+                     alt="Post image">
             </div>
         @endif
 
@@ -164,7 +180,9 @@
                         <div class="d-flex flex-column gap-2 align-items-stretch">
 
                             <div>
-                                <a class="btn btn-info w-100" href="/user/{{$comment->user->id}}/posts">
+                                <a class="btn btn-info w-100"
+                                   href="{{ route('users.posts', $comment->user->id) }}"
+                                >
                                     {{ $comment->user->username ?? 'Unknown' }}
                                 </a>
                             </div>
@@ -173,9 +191,13 @@
 
                                 @if (auth()->user()->administrator_flag)
                                     <div>
-                                        <form method="POST" class="w-100 m-0">
+                                        <form method="POST"
+                                              class="w-100 m-0"
+                                        >
                                             @csrf
-                                            <button class="btn btn-secondary w-100" type="submit">
+                                            <button class="btn btn-secondary w-100"
+                                                    type="submit"
+                                            >
                                                 &#x1F44F; {{ $comment->claps }}
                                             </button>
                                         </form>
@@ -183,13 +205,17 @@
                                 @endif
 
                                 <div>
-                                    <a class="btn btn-warning w-100" href="">
+                                    <a class="btn btn-warning w-100"
+                                       href=""
+                                    >
                                         &#x1F4DD; Backpedal
                                     </a>
                                 </div>
 
                                 <div>
-                                    <a class="btn btn-danger w-100" href="">
+                                    <a class="btn btn-danger w-100"
+                                       href=""
+                                    >
                                         &#x1F5D1;️ Delete
                                     </a>
                                 </div>
@@ -198,7 +224,9 @@
                                 <div>
                                     <form method="POST" class="w-100 m-0">
                                         @csrf
-                                        <button class="btn btn-secondary w-100" type="submit">
+                                        <button class="btn btn-secondary w-100"
+                                                type="submit"
+                                        >
                                             &#x1F44F; {{ $comment->claps }}
                                         </button>
                                     </form>
@@ -206,7 +234,9 @@
 
                                 @if (auth()->user()->administrator_flag)
                                     <div>
-                                        <a class="btn btn-danger w-100" href="">
+                                        <a class="btn btn-danger w-100"
+                                           href=""
+                                        >
                                             &#x1F5D1; Delete
                                         </a>
                                     </div>
@@ -223,4 +253,6 @@
             </ul>
         </div>
     </div>
+
+    <br>
 @endsection

@@ -13,15 +13,19 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
 
-            $table -> id();
-            $table -> foreignId('user_id')
-                -> constrained();          //Shortcut for references('id')->on('users')->onDelete('cascade')->onUpdate('cascade')
-            $table -> foreignId('post_id')
-                -> constrained();          //Shortcut for references('id')->on('posts')->onDelete('cascade')->onUpdate('cascade')
-            $table -> string('content');
-            $table -> integer('heard');
-            $table -> integer('claps');
-            $table -> timestamps();
+            $table  -> id();
+            $table  -> foreignId('user_id')
+                    -> constrained()                            // Shortcut for references('id')->on('users')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            $table  -> foreignId('post_id')
+                    -> constrained()                            // Shortcut for references('id')->on('users')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
+            $table  -> string('content');
+            $table  -> integer('heard');
+            $table  -> integer('claps');
+            $table  -> timestamps();
         });
     }
 

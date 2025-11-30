@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     // DEPRECATED METHOD FOR LOADING FEED
+    public function index()
+    {
+        $users = User::all();
+        return view('users.index', ['users'=>$users]);
+    }
+
+    // DEPRECATED METHOD FOR LOADING FEED
     public function details(User $user)
     {
         return view('users.details', ['user'=>$user]);
@@ -18,23 +25,17 @@ class UserController extends Controller
     // DEPRECATED METHOD FOR LOADING FEED
     public function update(User $user)
     {
-        if ($user->id == auth()->user()->id || auth()->user()->administrator_flag) {
-            return view('users.update', ['user'=>$user]);
-        }
-        else {
-            return redirect()
-                ->route('users.details', ['user'=>$user])
-                ->with('danger', 'You may not update this user!');
-        }
+        return view('users.update', ['user'=>$user]);
     }
 
     public function store(Request $request, User $user)
     {
         $validated = $request->validate([
-            'username' => 'required|string|max:255',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'password'    => 'nullable|string|min:8|confirmed', // password is optional
+            'username'      => 'required|string|max:255',
+            'first_name'    => 'nullable|string|max:255',
+            'last_name'     => 'nullable|string|max:255',
+            'email'         => 'required|string|email|max:255|unique:users',
+            'password'      => 'nullable|string|min:8|confirmed', // password is optional
         ]);
 
         // Hash the password if entered and validated
@@ -58,10 +59,11 @@ class UserController extends Controller
      * ...
      * @return \Illuminate\Http\RedirectResponse
      */
-    Public function destroy(Post $post)
+    Public function destroy(User $user)
     {
-        $post->delete();
-        return redirect()->route('posts.index')
-            ->with('message','Post deleted');
+        $user->delete();
+        return redirect()
+            ->route('users.index')
+            ->with('message','User deleted');
     }
 }

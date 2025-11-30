@@ -1,25 +1,67 @@
 @extends('layouts.myapp')
 
-<!-- Change active page depending on if page is a profile AND
-        the profile belongs to the currently authenticated user -->
-@if ($profileUser && $profileUser->id === auth()->id())
-    @section('nav_profile', 'active')
+<!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
+@if ($profileUser)
+    @if ($profileUser->id === auth()->id())
+
+        <!-- If this is the profile of the currently authorised user -->
+        @section('nav_profile', 'active')
+        @section('buttons')
+            <div class="col text-center">
+                <a class="btn btn-primary"
+                   href="{{ route("posts.create") }}"
+                   role="button"
+                >
+                    Start Shouting
+                </a>
+            </div>
+            <div class="col text-end">
+                <a class="btn btn-warning"
+                   href="{{ route("users.details", $profileUser) }}"
+                   role="button"
+                >
+                    My Details
+                </a>
+            </div>
+        @endsection
+    @else
+
+        <!-- If this is the profile of another user -->
+        @section('nav_dashboard', 'active')
+        @section('buttons')
+            <div class="col text-center">
+            </div>
+            <div class="col text-end">
+                <a class="btn btn-warning"
+                   href="{{ route("users.details", $profileUser) }}"
+                   role="button"
+                >
+                    User Details
+                </a>
+            </div>
+        @endsection
+    @endif
 @else
+
+    <!-- If this is not a user profile -->
     @section('nav_dashboard', 'active')
+    @section('buttons')
+        <div class="col text-center">
+            <a class="btn btn-primary"
+               href="{{ route("posts.create") }}"
+               role="button"
+            >
+                Start Shouting
+            </a>
+        </div>
+        <div class="col text-end">
+        </div>
+    @endsection
 @endif
 
-@section('buttons')
-    <div class="col text-center">
-        <a class="btn btn-primary" href="/posts/create" role="button">Start Shouting</a>
-    </div>
-    <div class="col text-end">
-        <a class="btn btn-primary" href="/posts/create" role="button">Start Shouting</a>
-    </div>
-@endsection
+
 
 @section('content')
-
-
 
     @foreach ($posts as $post)
 
@@ -40,7 +82,7 @@
                 <div class="row align-items-center">
                     <div class="col text-start fw-bold text-primary">
                         <a class= "btn btn-info"
-                           href="/user/{{$post->user->id}}/posts"
+                           href="{{ route("users.posts", $post->user->id) }}"
                            onClick="event.stopPropagation()"
                         >
                             &#x1F464;
@@ -52,8 +94,9 @@
                     @if ($post->echoed && isset($echoedPosts[$post->echoed]))
                         <div class="col text-center text-muted small">
                             <a class= "btn btn-info"
-                               href="/user/{{ $echoedPosts[$post->echoed]->user->id }}/posts"
-                               onClick="event.stopPropagation()">
+                               href="{{ route("users.posts", $echoedPosts[$post->echoed]->user->id) }}"
+                               onClick="event.stopPropagation()"
+                            >
                                 &#x1F5E3;
                                 {{ $echoedPosts[$post->echoed]->user->username }}
                             </a>
@@ -93,16 +136,21 @@
             <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
 
                 <!-- Claps (likes) on Post -->
-                <div> &#x1F44F; {{ $post->claps }} </div>
+                <div>
+                    &#x1F44F; {{ $post->claps }}
+                </div>
 
                 <!-- Echoes (reposts) of Post -->
-                <div> &#x1F5E3; {{ $post->echoes }} </div>
+                <div>
+                    &#x1F5E3; {{ $post->echoes }}
+                </div>
 
                 <!-- Comment count and dropdown button -->
                 <div>
                     <button class="btn btn-link text-decoration-none p-0"
                             data-bs-toggle="collapse" data-bs-target="#{{$collapseId}}"
-                            onClick="event.stopPropagation()">
+                            onClick="event.stopPropagation()"
+                    >
                         &#x1F4AC; {{ $post->comments->count() }} Comments
                     </button>
                 </div>
@@ -116,11 +164,15 @@
                     @foreach ($post->comments as $comment)
                     <li class="list-group-item d-flex justify-content-between">
                         <div>
-                            <strong>{{ $comment->user->username }}:</strong>
+                            <strong>
+                                {{ $comment->user->username }}:
+                            </strong>
                             {{ $comment->content }}
                         </div>
                         <div>
-                            <div> &#x1F44F; {{ $comment->claps }}</div>
+                            <div>
+                                &#x1F44F; {{ $comment->claps }}
+                            </div>
                         </div>
                     </li>
                     @endforeach

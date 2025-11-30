@@ -29,7 +29,7 @@ Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
 //POSTS: Delete
 Route::get('/posts/{post}/delete', [PostController::class, 'destroy'])
     ->name('posts.delete')
-    ->middleware('auth');
+    ->middleware('auth', 'access');
 
 //POSTS: Store
 Route::post('/posts', [PostController::class, 'store'])
@@ -50,21 +50,32 @@ Route::get('/login', function () {
     ->middleware('guest')
     ->name('login');
 
+//USER: Index
+Route::get('/users/index', [UserController::class, 'index'])
+    ->name('users.index')
+    ->middleware('auth','admin');
+
 //USER: Posts
-Route::get('/user/{user}/posts', [PostController::class, 'posts'])
+Route::get('/users/{user}/posts', [PostController::class, 'posts'])
     ->name('users.posts')
     ->middleware('auth');
 
 //USERS: Details
-Route::get('/user/{user}/details', [UserController::class, 'details'])
+Route::get('/users/{user}/details', [UserController::class, 'details'])
     ->name('users.details')
     ->middleware('auth');
 
 //USERS: Update
-Route::get('/user/{user}/update', [UserController::class, 'update'])
+Route::get('/users/{user}/update', [UserController::class, 'update'])
     ->name('users.update')
-    ->middleware('auth');
+    ->middleware('auth', 'access');
+
+//USERS: Delete
+Route::get('/users/{user}/delete', [UserController::class, 'destroy'])
+    ->name('users.delete')
+    ->middleware('auth', 'access');
 
 //USERS: Store
-Route::put('/user/{user}', [UserController::class, 'store'])
-    ->name('users.store');
+Route::put('/users/{user}', [UserController::class, 'store'])
+    ->name('users.store')
+    ->middleware('auth', 'access');
