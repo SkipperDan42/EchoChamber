@@ -2,11 +2,9 @@
 
 <!-- Change active page depending on if page is a profile AND
         the profile belongs to the currently authenticated user -->
-@if ($profileUser && $profileUser->id === auth()->id())
-    @section('nav_profile', 'active')
-@else
-    @section('nav_dashboard', 'active')
-@endif
+
+@section('nav_settings', 'active')
+@section('nav_user_details', 'active')
 
 @section('content')
 

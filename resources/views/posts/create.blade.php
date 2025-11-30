@@ -59,7 +59,7 @@
 
             {{-- Submit and Cancel buttons --}}
             <input type="submit" value="Submit">
-            <a href="{{route('posts.feed')}}">
+            <a href="{{route('posts.index')}}">
                 Cancel
             </a>
         </form>

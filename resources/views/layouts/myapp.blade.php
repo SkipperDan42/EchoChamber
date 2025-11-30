@@ -38,12 +38,12 @@
                 <ul class="navbar-nav mx-auto fs-4">
                     <li class="nav-item">
                         <a class="nav-link me-5 @yield('nav_dashboard')" href="/">
-                            Dashboard
+                            The Chamber
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link me-5 @yield('nav_profile')" href="/profile/{{$user = auth()->user()->id}}">
-                            Profile
+                            Monologue
                         </a>
                     </li>
                 </ul>
@@ -51,19 +51,19 @@
                 <!-- NAVBAR RIGHT SIDE -->
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown fs-4">
-                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                        <a class="nav-link dropdown-toggle @yield('nav_settings')" href="#" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
-                            Settings
+                            Tools
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end fs-5">
                             <li>
                                 <a class="dropdown-item @yield('nav_user_details')" href="#">
-                                    User Details
+                                    Boor Hole
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item @yield('nav_statistics')" href="#">
-                                    Statistics
+                                    Alternative Facts
                                 </a>
                             </li>
                             <li>

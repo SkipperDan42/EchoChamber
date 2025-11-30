@@ -10,7 +10,7 @@ Route::get('/', [PostController::class, 'posts'])
 
 //VIEW: Profile
 Route::get('/profile/{user}', [PostController::class, 'posts'])
-    ->name('post.index')
+    ->name('posts.user')
     ->middleware('auth');
 
 //LOGIN
@@ -19,24 +19,27 @@ Route::get('/login', function () {
     ->middleware('guest')
     ->name('login');
 
+//CREATE: Post
+Route::get('/posts/create', [PostController::class, 'create'])
+    ->name('posts.create')
+    ->middleware('auth');
 
 //SHOW: Post
 Route::get('/posts/{post}', [PostController::class, 'show'])
     ->name('posts.show')
     ->middleware('auth');
 
-//CREATE: Post
-Route::get('/posts/create', [PostController::class, 'create'])
-    ->name('posts.create')
-    ->middleware('auth');
-Route::post('/posts', [PostController::class, 'store'])
-    ->name('posts.store')
-    ->middleware('auth');
-
 //EDIT: Post
-Route::get('/posts/edit/{post}', [PostController::class, 'edit'])
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
     ->name('posts.edit')
     ->middleware('auth');
+
+//DELETE: Post
+Route::get('/posts/{post}/delete', [PostController::class, 'destroy'])
+    ->name('posts.delete')
+    ->middleware('auth');
+
+//STORE: Post
 Route::post('/posts', [PostController::class, 'store'])
     ->name('posts.store')
     ->middleware('auth');

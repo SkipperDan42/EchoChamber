@@ -38,7 +38,7 @@ class PostController extends Controller
                         ->get()
                         ->keyBy('id');
 
-        return view('posts.feed', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
+        return view('posts.index', ['posts'=>$posts, 'echoedPosts'=>$echoedPosts]);
     }
 
     // DEPRECATED METHOD FOR LOADING PROFILE
@@ -127,11 +127,11 @@ class PostController extends Controller
 
     public function create()
     {
-        return $this->edit(null);
+        return $this->edit();
     }
 
 
-    public function edit(Post $post)
+    public function edit(?Post $post = null)
     {
         return view('posts.create', ['post'=>$post]);
     }
@@ -189,7 +189,7 @@ class PostController extends Controller
 
         // Success confirmation and redirect
         session()->flash('message', $validatedData['id'] ? 'Post updated' : 'Posted');
-        return redirect()->route('posts.feed');
+        return redirect()->route('posts.index');
     }
 
     // Add a clap
@@ -214,7 +214,7 @@ class PostController extends Controller
     Public function destroy(Post $post)
     {
         $post->delete();
-        return redirect()->route('posts.feed')
+        return redirect()->route('posts.index')
             ->with('message','Post deleted');
     }
 }

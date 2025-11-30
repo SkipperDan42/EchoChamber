@@ -11,7 +11,7 @@
 @section('content')
 
     <div>
-        <a class="btn btn-primary" href="/posts/create" role="button">Create New</a>
+        <a class="btn btn-primary" href="/posts/create" role="button">Start Shouting</a>
     </div>
 
     @foreach ($posts as $post)
@@ -27,32 +27,34 @@
              onclick="window.location.href='{{ route('posts.show', $post) }}'">
 
             <!-- Header -->
-            <div class="card-header d-flex justify-content-between align-items-center bg-white border-bottom-0">
+            <div class="card-header bg-white">
 
                 <!-- Profile of Post Owner -->
-                <div class="d-flex flex-column justify-content-center">
-                    <div class="fw-bold text-primary">
-                        <a href="/profile/{{$post->user->id}}"
+                <div class="row align-items-center">
+                    <div class="col text-start fw-bold text-primary">
+                        <a class= "btn btn-info" href="/profile/{{$post->user->id}}"
                            onClick="event.stopPropagation()">
+                            &#x1F464;
                             {{ $post->user->username ?? 'Unknown' }}
                         </a>
                     </div>
 
                     <!-- Profile of Original Post Owner if Repost -->
                     @if ($post->echoed && isset($echoedPosts[$post->echoed]))
-                        <div class="text-muted small">
-                            &#x1F5E3;
-                            <a href="/profile/{{ $echoedPosts[$post->echoed]->user->id }}"
+                        <div class="col text-center text-muted small">
+                            <a class= "btn btn-info"
+                               href="/profile/{{ $echoedPosts[$post->echoed]->user->id }}"
                                onClick="event.stopPropagation()">
+                                &#x1F5E3;
                                 {{ $echoedPosts[$post->echoed]->user->username }}
                             </a>
                         </div>
                     @endif
-                </div>
 
-                <!-- DateTime of Post Creation -->
-                <div class="fw-bold text-primary">
-                    {{ $post->created_at->format('H:i d/m/Y') ?? 'Unknown' }}
+                    <!-- DateTime of Post Creation -->
+                    <div class="col text-end w-bold text-info">
+                        {{ $post->created_at->format('H:i d/m/Y') ?? 'Unknown' }}
+                    </div>
                 </div>
             </div>
 
