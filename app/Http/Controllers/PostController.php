@@ -40,32 +40,16 @@ class PostController extends Controller
                 ->paginate(5);
         }
 
-        // Get the users of all echoed posts
-        $echoedIds = $posts
-            ->pluck('echoed')
-            ->filter()
-            ->unique();
-        $echoedPosts = Post::with('user')
-            ->whereIn('id', $echoedIds)
-            ->get()
-            ->keyBy('id');
-
         return view('posts.index',
                     ['posts'=>$posts,
-                    'echoedPosts'=>$echoedPosts,
                     'profileUser' => $user,
                     ]);
     }
 
     public function show(Post $post)
     {
-        $echoedPost = Post::with('user')
-            ->where('id', $post->echoed)
-            ->first();
-
         return view('posts.show',
             ['post'=>$post,
-            'echoedPost'=>$echoedPost,
             'profileUser' => $post->user
             ]);
     }
@@ -91,10 +75,11 @@ class PostController extends Controller
     {
         // Validate the form fields
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'content' => 'nullable|string|max:7000',
-            'media' => ['nullable', 'url', new ImageUrl, 'max:255'],
-            'id'    => 'nullable|integer|exists:posts,id', // Hidden for edits only
+            'title'     => 'required|string|max:255',
+            'content'   => 'nullable|string|max:7000',
+            'media'     => ['nullable', 'url', new ImageUrl, 'max:255'],
+            'user_id'   => 'required|integer|exists:users,id',
+            'id'        => 'nullable|integer|exists:posts,id', // Hidden for edits only
         ]);
 
         // Check if id is empty (i.e. if post is being edited)
@@ -102,13 +87,13 @@ class PostController extends Controller
             $original_post = Post::findOrFail($validatedData['id']);
 
             // Edit if authenticated user owns the post
-            if ($original_post->user_id == auth()->id()) {
+            if ($original_post->user_id == $validatedData['user_id']) {
                 $post = $original_post;
             }
             // Echo if authenticated user does not own the post
             else {
                 $post = new Post();
-                $post->user_id = auth()->id();
+                $post->user_id = $validatedData['user_id'];
                 $post->heard = 0;
                 $post->echoed = $original_post->user_id;
                 $post->echoes = 0;
@@ -119,7 +104,7 @@ class PostController extends Controller
         else {
 
             $post = new Post();
-            $post->user_id = auth()->id();
+            $post->user_id = $validatedData['user_id'];
             $post->heard = 0;
             $post->echoed = null;
             $post->echoes = 0;

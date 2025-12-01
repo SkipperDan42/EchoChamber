@@ -89,16 +89,16 @@
                                 @if (auth()->user()->administrator_flag)
                                     <li>
                                         <a class="dropdown-item @yield('nav_all_users')"
-                                           href="{{ route("admin.index") }}"
+                                           href="{{ route("admin.users") }}"
                                         >
-                                            All Users
+                                            All User Details
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item @yield('nav_all_stats')"
                                            href="{{ route("admin.stats") }}"
                                         >
-                                            All Stats
+                                            All-ternative Facts
                                         </a>
                                     </li>
                                 @endif

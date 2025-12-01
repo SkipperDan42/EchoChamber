@@ -109,10 +109,10 @@
                 @if ($post->echoed)
                     <div class="col text-center text-muted small">
                         <a class= "btn btn-info"
-                           href="{{ route("users.posts", $echoedPost->user->id) }}"
+                           href="{{ route("users.posts", $post->echoed_post->user->id) }}"
                         >
                             &#x1F5E3;
-                            {{ $echoedPost->user->username }}
+                            {{ $post->echoed_post->user->username }}
                         </a>
                     </div>
                 @endif
@@ -169,8 +169,8 @@
             </div>
         </div>
 
-        <!-- Comments Dropdown -->
-        <div class="border-top">
+        <!-- Comments -->
+        <div class="border-top border-bottom">
             <ul class="list-group list-group-flush">
                 <!-- Each comment displayed with username, content and claps -->
                 @foreach ($post->comments as $comment)
@@ -206,7 +206,7 @@
 
                                 <div>
                                     <a class="btn btn-warning w-100"
-                                       href=""
+                                       href="{{ route("comments.edit", $comment) }}"
                                     >
                                         &#x1F4DD; Backpedal
                                     </a>
@@ -214,7 +214,7 @@
 
                                 <div>
                                     <a class="btn btn-danger w-100"
-                                       href=""
+                                       href="{{ route("comments.delete", $comment) }}"
                                     >
                                         &#x1F5D1;️ Delete
                                     </a>
@@ -235,7 +235,7 @@
                                 @if (auth()->user()->administrator_flag)
                                     <div>
                                         <a class="btn btn-danger w-100"
-                                           href=""
+                                           href="{{ route("comments.delete", $comment) }}"
                                         >
                                             &#x1F5D1; Delete
                                         </a>
@@ -251,6 +251,53 @@
                     </li>
                 @endforeach
             </ul>
+        </div>
+
+        <!-- Add Comment Dropdown -->
+        <div class="mx-2 my-2" id="addComment">
+            <form method="POST"
+                  action="{{ route('comments.store') }}"
+                  class="mt-3"
+            >
+                @csrf
+
+                <!-- Input for Post Content -->
+                <div class="form-group mx-2 my-2">
+                    <textarea class="form-control"
+                              id="content"
+                              type="text"
+                              name="content"
+                              rows="5"
+                              placeholder="Write a comment..."
+                    ></textarea>
+
+                    <!-- Inline error message -->
+                    @error('content')
+                    <div class="alert alert-danger">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <!-- Hidden input to pass user data -->
+                <input type="hidden"
+                       name="user_id"
+                       value="{{ auth()->user()->id }}"
+                >
+
+                <!-- Hidden input to pass post data -->
+                <input type="hidden"
+                       name="post_id"
+                       value="{{ $post->id }}"
+                >
+
+                <!-- Submit button -->
+                <div class="d-flex mx-2 my-2">
+                    <button type="submit" class="btn btn-primary px-4">
+                        Submit
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 

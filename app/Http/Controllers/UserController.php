@@ -14,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('users.index', ['users'=>$users]);
+        return view('admin.users', ['users'=>$users]);
     }
 
     // DEPRECATED METHOD FOR LOADING FEED
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect()
-            ->route('users.index')
+            ->route('admin.users')
             ->with('message','User deleted');
     }
 
@@ -74,8 +74,6 @@ class UserController extends Controller
     // depending on the route used (and whether a user is provided)
     public function user_stats(User $user)
     {
-
-
         $postMetrics = [
             'Top Heard Post'    => $user->top_heard_post,
             'Top Clapped Post'  => $user->top_clapped_post,

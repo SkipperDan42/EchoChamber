@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -41,6 +42,44 @@ Route::post('/posts/{post}/clap', [PostController::class, 'clap'])
     ->name('posts.clap')
     ->middleware('auth');
 
+//POSTS: Un-Clap
+Route::post('/posts/{post}/unclap', [PostController::class, 'unclap'])
+    ->name('posts.unclap')
+    ->middleware('auth');
+
+
+//----------------------------------COMMENT----------------------------------//
+
+//COMMENT: Create
+Route::get('/comments/create', [CommentController::class, 'create'])
+    ->name('comments.create')
+    ->middleware('auth');
+
+//COMMENT: Edit
+Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])
+    ->name('comments.edit')
+    ->middleware('auth');
+
+//COMMENT: Delete
+Route::get('/comments/{comment}/delete', [CommentController::class, 'destroy'])
+    ->name('comments.delete')
+    ->middleware('auth', 'access');
+
+//COMMENT: Store
+Route::post('/comments', [CommentController::class, 'store'])
+    ->name('comments.store')
+    ->middleware('auth');
+
+//COMMENT: Clap
+Route::post('/comments/{comment}/clap', [CommentController::class, 'clap'])
+    ->name('comments.clap')
+    ->middleware('auth');
+
+//COMMENT: Un-Clap
+Route::post('/comments/{comment}/unclap', [CommentController::class, 'unclap'])
+    ->name('comments.unclap')
+    ->middleware('auth');
+
 
 //----------------------------------AUTH----------------------------------//
 
@@ -55,7 +94,7 @@ Route::get('/login', function () {
 
 //ADMIN: Users
 Route::get('/admin/index', [UserController::class, 'index'])
-    ->name('admin.index')
+    ->name('admin.users')
     ->middleware('auth','admin');
 
 //ADMIN: Stats

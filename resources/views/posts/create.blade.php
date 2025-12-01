@@ -9,9 +9,9 @@
          style="max-width: 600px;"
     >
         <!-- Header -->
-        <div class="card-header d-flex align-items-center bg-white border-bottom-0">
+        <div class="card-header text-center bg-white my-2">
             <h1>
-                Create a Post
+                Start Shouting
             </h1>
         </div>
         <div class="card-body">
@@ -54,9 +54,7 @@
                               type="text"
                               name="content"
                               rows="5"
-                    >
-                        {{ old("content", $post->content ?? "") }}
-                    </textarea>
+                    >{{ old("content", $post->content ?? "") }}</textarea>
 
                     {{-- Inline error message --}}
                     @error('content')
@@ -88,6 +86,12 @@
                     @enderror
                 </div>
 
+                {{-- Hidden input to pass user data --}}
+                <input type="hidden"
+                       name="user_id"
+                       value="{{ auth()->user()->id }}"
+                >
+
                 {{-- Hidden input to pass edited post data --}}
                 <input type="hidden"
                        name="id"
@@ -95,12 +99,14 @@
                 >
 
                 {{-- Submit and Cancel buttons --}}
-                <input type="submit"
-                       value="Submit"
-                >
-                <a href="{{ route('posts.index') }}">
-                    Cancel
-                </a>
+                <div class="d-flex justify-content-between mx-2 my-2">
+                    <button type="submit" class="btn btn-success px-4">
+                        Submit
+                    </button>
+                    <a href="{{ route('posts.index') }}" class="btn btn-danger">
+                        Cancel
+                    </a>
+                </div>
             </form>
         </div>
     </div>
