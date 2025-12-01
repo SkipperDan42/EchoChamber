@@ -89,9 +89,16 @@
                                 @if (auth()->user()->administrator_flag)
                                     <li>
                                         <a class="dropdown-item @yield('nav_all_users')"
-                                           href="{{route("users.index")}}"
+                                           href="{{ route("admin.index") }}"
                                         >
                                             All Users
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item @yield('nav_all_stats')"
+                                           href="{{ route("admin.stats") }}"
+                                        >
+                                            All Stats
                                         </a>
                                     </li>
                                 @endif
@@ -99,7 +106,7 @@
                                 <!-- Personal details -->
                                 <li>
                                     <a class="dropdown-item @yield('nav_statistics')"
-                                       href="{{route("users.details", auth()->user()->id)}}"
+                                       href="{{ route("users.details", auth()->user()->id) }}"
                                     >
                                         My Details
                                     </a>
@@ -108,7 +115,7 @@
                                 <!-- Personal statistics -->
                                 <li>
                                     <a class="dropdown-item @yield('nav_statistics')"
-                                       href="{{route("users.details", auth()->user()->id)}}"
+                                       href="{{ route("users.stats", auth()->user()->id) }}"
                                     >
                                         Alternative Facts
                                     </a>

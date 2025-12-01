@@ -38,9 +38,9 @@ class UsersTableSeeder extends Seeder
         $c -> username = "NigelTheRacistSchoolboy";
         $c -> first_name = "Nigel";
         $c -> last_name = "Farage";
-        $c -> email = "TwoPintNigel@ukip.co.uk";
+        $c -> email = "twopintnigel@ukip.co.uk";
         $c -> administrator_flag = false;
-        $c -> password = bcrypt("password");
+        $c -> password = bcrypt("BADpassword");
         $c -> save();
 
         // Create new regular User with forceFill (bypasses $fillable)

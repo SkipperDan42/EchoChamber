@@ -70,7 +70,7 @@
                     </td>
                     <td>
                         <a class="btn btn-success"
-                           href="{{ route('users.details', $user) }}"
+                           href="{{ route('users.stats', $user) }}"
                         >
                             &#x1F4CA;
                         </a>

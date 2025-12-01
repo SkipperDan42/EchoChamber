@@ -41,6 +41,52 @@ class User extends Authenticatable
         'administrator_flag',
     ];
 
+    /**
+     * Ensures that any email entered, whether in Registration, Update or Login
+     * is correctly trimmed and set to lower-case
+     *
+     * @var String value    - the email to be correctly set
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = trim(strtolower($value));
+    }
+
+    public function getTopHeardPostAttribute()
+    {
+        return $this->posts()
+            ->orderBy('heard', 'desc')
+            ->first();
+    }
+
+    public function getTopHeardCommentAttribute()
+    {
+        return $this->comments()
+            ->orderBy('heard', 'desc')
+            ->first();
+    }
+
+    public function getTopClappedPostAttribute()
+    {
+        return $this->posts()
+            ->orderBy('claps', 'desc')
+            ->first();
+    }
+
+    public function getTopClappedCommentAttribute()
+    {
+        return $this->comments()
+            ->orderBy('claps', 'desc')
+            ->first();
+    }
+
+    public function getTopEchoedPostAttribute()
+    {
+        return $this->posts()
+            ->orderBy('echoes', 'desc')
+            ->first();
+    }
+
     public function posts()
     {
         return $this -> hasMany(Post::class);

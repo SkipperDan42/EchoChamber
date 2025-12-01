@@ -25,6 +25,12 @@ class Post extends Model
         'claps'
     ];
 
+    public function getEchoedPostAttribute()
+    {
+        return Post::where('id', $this->echoed)
+                ->first();
+    }
+
     public function user()
     {
         return $this -> belongsTo(User::class);

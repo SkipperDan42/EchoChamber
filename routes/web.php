@@ -42,7 +42,7 @@ Route::post('/posts/{post}/clap', [PostController::class, 'clap'])
     ->middleware('auth');
 
 
-//----------------------------------USERS----------------------------------//
+//----------------------------------AUTH----------------------------------//
 
 //USER: LOGIN
 Route::get('/login', function () {
@@ -50,10 +50,21 @@ Route::get('/login', function () {
     ->middleware('guest')
     ->name('login');
 
-//USER: Index
-Route::get('/users/index', [UserController::class, 'index'])
-    ->name('users.index')
+
+//----------------------------------ADMIN----------------------------------//
+
+//ADMIN: Users
+Route::get('/admin/index', [UserController::class, 'index'])
+    ->name('admin.index')
     ->middleware('auth','admin');
+
+//ADMIN: Stats
+Route::get('/admin/stats', [UserController::class, 'all_user_stats'])
+    ->name('admin.stats')
+    ->middleware('auth','admin');
+
+
+//----------------------------------USERS----------------------------------//
 
 //USER: Posts
 Route::get('/users/{user}/posts', [PostController::class, 'posts'])
@@ -64,6 +75,11 @@ Route::get('/users/{user}/posts', [PostController::class, 'posts'])
 Route::get('/users/{user}/details', [UserController::class, 'details'])
     ->name('users.details')
     ->middleware('auth');
+
+//USER: Stats
+Route::get('/users/{user}/stats', [UserController::class, 'user_stats'])
+    ->name('users.stats')
+    ->middleware('auth','access');
 
 //USERS: Update
 Route::get('/users/{user}/update', [UserController::class, 'update'])
@@ -79,3 +95,5 @@ Route::get('/users/{user}/delete', [UserController::class, 'destroy'])
 Route::put('/users/{user}', [UserController::class, 'store'])
     ->name('users.store')
     ->middleware('auth', 'access');
+
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Post;
 use App\Rules\ImageUrl;
@@ -31,9 +32,9 @@ class UserController extends Controller
     public function store(Request $request, User $user)
     {
         $validated = $request->validate([
-            'username'      => 'required|string|max:255',
-            'first_name'    => 'nullable|string|max:255',
-            'last_name'     => 'nullable|string|max:255',
+            'username'      => 'required|string|max:40',
+            'first_name'    => 'nullable|string|max:40',
+            'last_name'     => 'nullable|string|max:40',
             'email'         => 'required|string|email|max:255|unique:users',
             'password'      => 'nullable|string|min:8|confirmed', // password is optional
         ]);
@@ -54,7 +55,6 @@ class UserController extends Controller
             ->with('message', 'User updated successfully.');
     }
 
-
     /**
      * ...
      * @return \Illuminate\Http\RedirectResponse
@@ -65,5 +65,37 @@ class UserController extends Controller
         return redirect()
             ->route('users.index')
             ->with('message','User deleted');
+    }
+
+
+
+    // Method loads posts either from all users (the feed)
+    // or from a single user (a profile)
+    // depending on the route used (and whether a user is provided)
+    public function user_stats(User $user)
+    {
+
+
+        $postMetrics = [
+            'Top Heard Post'    => $user->top_heard_post,
+            'Top Clapped Post'  => $user->top_clapped_post,
+            'Top Echoed Post'   => $user->top_echoed_post];
+        $commentMetrics = [
+            'Top Heard Comment'     => $user->top_heard_comment,
+            'Top Clapped Comment'   => $user->top_clapped_comment];
+
+        return view('users.stats',
+            [
+                'postMetrics' => $postMetrics,
+                'commentMetrics' => $commentMetrics
+            ]);
+    }
+
+    public function all_user_stats()
+    {
+        $users = User::withCount(['posts', 'comments'])
+                ->get();
+
+        return view('admin.stats', ['users' => $users]);
     }
 }
