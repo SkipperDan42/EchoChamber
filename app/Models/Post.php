@@ -40,4 +40,10 @@ class Post extends Model
     {
         return $this -> hasMany(Comment::class);
     }
+
+    public function claps()
+    {
+        return $this->belongsToMany(User::class, 'post_claps')
+            ->withTimestamps();
+    }
 }

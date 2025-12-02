@@ -73,14 +73,15 @@ class PostsTableSeeder extends Seeder
 
         ////////////////////////////////////////// FACTORY SEEDING //////////////////////////////////////////
 
-        // Get users count and pass to a Factory Helper Method to reduce DB queries
-        $user_count = User::all() -> count();
+        // Get user ids and count and pass to a Factory Helper Method to reduce DB queries
+        $users = User::all()->pluck('id');
+        $user_count = $users->count();
 
-        // Create original posts with a factory (250 for each users making 2 - 3 posts)
+        // Create original posts with a factory (each user making approximately 3 posts)
         // Factory uses withUserCount Helper Method
         Post::factory()
             -> withUserCount($user_count)
-            -> count(250)
+            -> count($user_count * 3)
             -> create();
 
         // Create echoes of posts that have been echoed (i.e. reposted)
@@ -88,13 +89,28 @@ class PostsTableSeeder extends Seeder
         // Factory uses withEcho Helper Method
         // NOTE this could be a nested loop for re-re-posted, but for simplicity no dummy echoes are echoed
         $posts = Post::where('echoes' ,'>', 0)
-            -> get();
+                -> get();
         foreach ($posts as $post) {
             Post::factory()
                 -> withUserCount($user_count)
                 -> withEcho($post)
                 -> count($post -> echoes)
                 -> create();
+        }
+
+        // Create claps on posts that have been clapped (i.e. liked)
+        // NOTE this uses the claps relationship to fill the post_claps pivot table
+        $posts = Post::where('claps' ,'>', 0)
+                -> get();
+        foreach ($posts as $post) {
+            // Take random selection of users for each clap, excluding the post owner
+            $clappers = $users
+                        -> reject(fn($id) => $id === $post->user_id)
+                        -> shuffle()
+                        -> take($post->claps);
+
+            // Attach claps to pivot without removing previous ones
+            $post->claps()->syncWithoutDetaching($clappers);
         }
     }
 }

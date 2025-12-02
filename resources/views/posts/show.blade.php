@@ -1,16 +1,9 @@
 @extends('layouts.myapp')
 
-<!-- Change active page depending on if page is a profile AND
-        the profile belongs to the currently authenticated user -->
-@if ($profileUser && $profileUser->id === auth()->id())
-    @section('nav_profile', 'active')
-@else
-    @section('nav_dashboard', 'active')
-@endif
+<!-- LOGIC FOR ACTIVE PAGE -->
+@section($post->user == auth()->user() ? 'nav_profile' : 'nav_dashboard', 'active')
 
 @section('content')
-
-
 
     <!-- CARD FOR POST -->
     <div class="card shadow-sm mx-auto" style="max-width: 600px;">
@@ -31,8 +24,12 @@
                                   method="POST"
                                   class="d-inline"
                             >
-                                @csrf
-                                <button class="btn btn-secondary">
+                                @php
+                                    $userClapped = $post->claps()
+                                                            ->where('user_id', auth()->user()->id)
+                                                            ->exists();
+                                @endphp
+                                <button class="btn {{ $userClapped ? 'btn-success' : 'btn-secondary' }}">
                                     &#x1F44F; Clap
                                 </button>
                             </form>
@@ -65,7 +62,12 @@
                               class="d-inline"
                         >
                             @csrf
-                            <button class="btn btn-secondary">
+                            @php
+                                $userClapped = $post->claps()
+                                                        ->where('user_id', auth()->user()->id)
+                                                        ->exists();
+                            @endphp
+                            <button class="btn {{ $userClapped ? 'btn-success' : 'btn-secondary' }}">
                                 &#x1F44F; Clap
                             </button>
                         </form>
@@ -172,75 +174,35 @@
         <!-- Comments -->
         <div class="border-top border-bottom">
             <ul class="list-group list-group-flush">
-                <!-- Each comment displayed with username, content and claps -->
+                <!-- Each comment displayed with username, content, and claps -->
                 @foreach ($post->comments as $comment)
                     <li class="list-group-item d-flex justify-content-between align-items-start">
 
-                        <!-- LEFT COLUMN (vertical) -->
-                        <div class="d-flex flex-column gap-2 align-items-stretch">
+                        <!-- LEFT COLUMN -->
+                        <div class="d-flex flex-column gap-2 align-items-start">
+                            <!-- Username -->
+                            <a class="btn btn-sm btn-info"
+                               href="{{ route('users.posts', $comment->user->id) }}">
+                                {{ $comment->user->username ?? 'Unknown' }}
+                            </a>
 
-                            <div>
-                                <a class="btn btn-info w-100"
-                                   href="{{ route('users.posts', $comment->user->id) }}"
-                                >
-                                    {{ $comment->user->username ?? 'Unknown' }}
-                                </a>
-                            </div>
-
-                            @if ($comment->user_id == auth()->user()->id)
-
-                                @if (auth()->user()->administrator_flag)
-                                    <div>
-                                        <form method="POST"
-                                              class="w-100 m-0"
-                                        >
-                                            @csrf
-                                            <button class="btn btn-secondary w-100"
-                                                    type="submit"
-                                            >
-                                                &#x1F44F; {{ $comment->claps }}
-                                            </button>
-                                        </form>
-                                    </div>
-                                @endif
-
-                                <div>
-                                    <a class="btn btn-warning w-100"
-                                       href="{{ route("comments.edit", $comment) }}"
-                                    >
-                                        &#x1F4DD; Backpedal
-                                    </a>
-                                </div>
-
-                                <div>
-                                    <a class="btn btn-danger w-100"
-                                       href="{{ route("comments.delete", $comment) }}"
-                                    >
-                                        &#x1F5D1;️ Delete
-                                    </a>
-                                </div>
-
+                            <!-- Clap Button -->
+                            @if (!$comment->user_id === auth()->user()->id || auth()->user()->administrator_flag)
+                                <form action="{{ route('comments.clap', $comment) }}" method="POST">
+                                    @csrf
+                                    @php
+                                        $userClapped = $comment->claps()
+                                                                ->where('user_id', auth()->user()->id)
+                                                                ->exists();
+                                    @endphp
+                                    <button class="btn btn-sm {{ $userClapped ? 'btn-success' : 'btn-secondary' }}">
+                                        &#x1F44F; {{ $comment->claps }}
+                                    </button>
+                                </form>
                             @else
-                                <div>
-                                    <form method="POST" class="w-100 m-0">
-                                        @csrf
-                                        <button class="btn btn-secondary w-100"
-                                                type="submit"
-                                        >
-                                            &#x1F44F; {{ $comment->claps }}
-                                        </button>
-                                    </form>
-                                </div>
-
-                                @if (auth()->user()->administrator_flag)
-                                    <div>
-                                        <a class="btn btn-danger w-100"
-                                           href="{{ route("comments.delete", $comment) }}"
-                                        >
-                                            &#x1F5D1; Delete
-                                        </a>
-                                    </div>
-                                @endif
+                                <button class="btn btn-sm btn-secondary">
+                                    &#x1F44F; {{ $comment->claps }}
+                                </button>
                             @endif
                         </div>
 
@@ -248,6 +210,30 @@
                         <div class="flex-grow-1 text-center px-3">
                             {{ $comment->content }}
                         </div>
+
+                        <!-- RIGHT COLUMN -->
+                        <div class="d-flex flex-column gap-2 align-items-end">
+                            @if ($comment->user_id == auth()->user()->id)
+                                <!-- Backpedal/Edit -->
+                                <a class="btn btn-sm btn-warning"
+                                   href="{{ route('comments.edit', $comment) }}">
+                                    &#x1F4DD;
+                                </a>
+
+                                <!-- Delete -->
+                                <a class="btn btn-sm btn-danger"
+                                   href="{{ route('comments.delete', $comment) }}">
+                                    &#x1F5D1;️
+                                </a>
+                            @elseif(auth()->user()->administrator_flag)
+                                <!-- Admin delete -->
+                                <a class="btn btn-sm btn-danger"
+                                   href="{{ route('comments.delete', $comment) }}">
+                                    &#x1F5D1;
+                                </a>
+                            @endif
+                        </div>
+
                     </li>
                 @endforeach
             </ul>

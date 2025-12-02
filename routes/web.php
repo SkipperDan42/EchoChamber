@@ -42,11 +42,6 @@ Route::post('/posts/{post}/clap', [PostController::class, 'clap'])
     ->name('posts.clap')
     ->middleware('auth');
 
-//POSTS: Un-Clap
-Route::post('/posts/{post}/unclap', [PostController::class, 'unclap'])
-    ->name('posts.unclap')
-    ->middleware('auth');
-
 
 //----------------------------------COMMENT----------------------------------//
 
@@ -73,11 +68,6 @@ Route::post('/comments', [CommentController::class, 'store'])
 //COMMENT: Clap
 Route::post('/comments/{comment}/clap', [CommentController::class, 'clap'])
     ->name('comments.clap')
-    ->middleware('auth');
-
-//COMMENT: Un-Clap
-Route::post('/comments/{comment}/unclap', [CommentController::class, 'unclap'])
-    ->name('comments.unclap')
     ->middleware('auth');
 
 
@@ -108,6 +98,11 @@ Route::get('/admin/stats', [UserController::class, 'all_user_stats'])
 //USER: Posts
 Route::get('/users/{user}/posts', [PostController::class, 'posts'])
     ->name('users.posts')
+    ->middleware('auth');
+
+//USER: Comments
+Route::get('/users/{user}/comments', [CommentController::class, 'comments'])
+    ->name('users.comments')
     ->middleware('auth');
 
 //USERS: Details

@@ -1,17 +1,68 @@
 @extends('layouts.myapp')
 
-<!-- Change active page depending on if page is a profile AND
-        the profile belongs to the currently authenticated user -->
+<!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
+@php
+    $authProfile = ($user == auth()->user());
+@endphp
+<!-- If this is the profile of the currently authenticated user -->
+@if ($authProfile)
+    @section('nav_settings', 'active')
+    @section('nav_my_details', 'active')
 
-@section('nav_settings', 'active')
-@section('nav_user_details', 'active')
+<!-- If this is another user profile dashboard active -->
+@else
+    @section('nav_dashboard', 'active')
+@endif
+
+@section('buttons')
+    <div class="col text-end dropdown">
+        <button class="btn btn-warning dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+        >
+            Boorhole
+        </button>
+        <div class="dropdown-menu"
+             aria-labelledby="dropdownMenuButton"
+        >
+            <a class="dropdown-item"
+               href="{{ route("users.details", $user) }}"
+               role="button"
+            >
+                {{$authProfile ? 'My Deets' : 'Boor Deets'}}
+            </a>
+            <a class="dropdown-item"
+               href="{{ route("users.posts", $user) }}"
+               role="button"
+            >
+                {{$authProfile ? 'My Shouts' : 'Boor Shouts'}}
+            </a>
+            <a class="dropdown-item"
+               href="{{ route("users.comments", $user) }}"
+               role="button"
+            >
+                {{$authProfile ? 'My Whispers' : 'Boor Whispers'}}
+            </a>
+            <a class="dropdown-item"
+               href="{{ route("users.stats", $user) }}"
+               role="button"
+            >
+                Alternative Facts
+            </a>
+        </div>
+    </div>
+@endsection
+
+
 
 @section('content')
     <!-- CARD FOR POST -->
     <div class="card shadow-sm mx-auto"
          style="max-width: 600px;"
     >
-
         <!-- If Auth User is this User or Admin then Update Details and Change Password options -->
         @if ($user->id == auth()->user()->id || auth()->user()->administrator_flag)
             <!-- Header -->

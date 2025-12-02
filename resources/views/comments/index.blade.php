@@ -2,11 +2,11 @@
 
 <!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
 @if ($profileUser)
-    @if ($profileUser->id === auth()->id())
+    <!-- Is this is the profile of the currently authorised user -->
+    @section($profileUser->id === auth()->id() ? 'nav_profile' : 'nav_dashboard', 'active')
 
-        <!-- If this is the profile of the currently authorised user -->
-        @section('nav_profile', 'active')
-        @section('buttons')
+    @section('buttons')
+        @if ($profileUser->id === auth()->id())
             <div class="col text-center">
                 <a class="btn btn-primary"
                    href="{{ route("posts.create") }}"
@@ -15,34 +15,49 @@
                     Start Shouting
                 </a>
             </div>
-            <div class="col text-end">
-                <a class="btn btn-warning"
-                   href="{{ route("users.details", $profileUser) }}"
-                   role="button"
-                >
-                    My Details
-                </a>
-            </div>
-        @endsection
-    @else
+        @endif
 
-        <!-- If this is the profile of another user -->
-        @section('nav_dashboard', 'active')
-        @section('buttons')
-            <div class="col text-center">
-            </div>
-            <div class="col text-end">
-                <a class="btn btn-warning"
+        <div class="col text-end dropdown">
+            <button class="btn btn-warning dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-bs-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+            >
+                Boorhole
+            </button>
+            <div class="dropdown-menu"
+                 aria-labelledby="dropdownMenuButton"
+            >
+                <a class="dropdown-item"
                    href="{{ route("users.details", $profileUser) }}"
                    role="button"
                 >
-                    User Details
+                    Boor Deets
+                </a>
+                <a class="dropdown-item"
+                   href="{{ route("users.posts", $profileUser) }}"
+                   role="button"
+                >
+                    Boor Shouts
+                </a>
+                <a class="dropdown-item"
+                   href="{{ route("users.comments", $profileUser) }}"
+                   role="button"
+                >
+                    Boor Whispers
+                </a>
+                <a class="dropdown-item"
+                   href="{{ route("users.stats", $profileUser) }}"
+                   role="button"
+                >
+                    Alternative Facts
                 </a>
             </div>
-        @endsection
-    @endif
+        </div>
+    @endsection
 @else
-
     <!-- If this is not a user profile -->
     @section('nav_dashboard', 'active')
     @section('buttons')
@@ -59,20 +74,13 @@
     @endsection
 @endif
 
-
-
 @section('content')
 
-    @foreach ($posts as $post)
+    @foreach ($comments as $comment)
 
-        <!-- Collapse each card independently -->
-        @php
-            $collapseId = "commentsSection-" . $post->id;
-        @endphp
-
-        <!-- CARDS FOR USER POSTS -->
+        <!-- CARD FOR POST -->
         <div class="card shadow-sm mx-auto" style="max-width: 600px;"
-             onclick="window.location.href='{{ route('posts.show', $post) }}'">
+             onclick="window.location.href='{{ route('posts.show', $comment->post) }}'">
 
             <!-- Header -->
             <div class="card-header bg-white">
@@ -81,109 +89,77 @@
                 <div class="row align-items-center">
                     <div class="col text-start fw-bold text-primary">
                         <a class= "btn btn-info"
-                           href="{{ route("users.posts", $post->user->id) }}"
-                           onClick="event.stopPropagation()"
+                           href="{{ route("users.posts", $comment->post->user?->id) }}"
                         >
                             &#x1F464;
-                            {{ $post->user->username ?? 'Unknown' }}
+                            {{ $comment->post->user->username ?? 'Unknown' }}
                         </a>
                     </div>
 
                     <!-- Profile of Original Post Owner if Repost -->
-                    @if ($post->echoed)
+                    @if ($comment->post->echoed)
                         <div class="col text-center text-muted small">
                             <a class= "btn btn-info"
-                               href="{{ route("users.posts", $post->echoed_post->user->id) }}"
-                               onClick="event.stopPropagation()"
+                               href="{{ route("users.posts", $comment->post->echoed_post->user->id) }}"
                             >
                                 &#x1F5E3;
-                                {{ $post->echoed_post->user->username }}
+                                {{ $comment->post->echoed_post->user->username ?? 'Unknown' }}
                             </a>
                         </div>
                     @endif
 
                     <!-- DateTime of Post Creation -->
                     <div class="col text-end w-bold text-info">
-                        {{ $post->created_at->format('H:i d/m/Y') ?? 'Unknown' }}
+                        {{ $comment->post->created_at->format('H:i d/m/Y') ?? 'Unknown' }}
                     </div>
                 </div>
             </div>
 
-            <!-- Media if Posted -->
-            @if ($post->media)
-                <!-- Media -->
-                <img src="{{ $post->media }}" class="card-img-top" alt="Post image">
-            @endif
-
             <!-- Body -->
-            <div class="card-body">
-
+            <div class="card-body border-bottom">
                 <!-- Title -->
                 <h5 class="card-title mb-2">
-                    {{ $post->title }}
+                    {{ $comment->post->title }}
                 </h5>
-
-                <!-- Content if Posted-->
-                @if ($post->content)
-                    <p class="card-text">
-                        {{ $post->content }}
-                    </p>
-                @endif
             </div>
 
             <!-- Footer -->
-            <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center">
+            <div class="card-footer bg-white border-bottom border-top-0 d-flex justify-content-between align-items-center">
 
                 <!-- Claps (likes) on Post -->
                 <div>
-                    &#x1F44F; {{ $post->claps }}
+                    &#x1F44F; {{ $comment->post->claps }}
                 </div>
 
                 <!-- Echoes (reposts) of Post -->
                 <div>
-                    &#x1F5E3; {{ $post->echoes }}
+                    &#x1F5E3; {{ $comment->post->echoes }}
                 </div>
 
-                <!-- Comment count and dropdown button -->
+                <!-- Comment count -->
                 <div>
-                    <button class="btn btn-link text-decoration-none p-0"
-                            data-bs-toggle="collapse" data-bs-target="#{{$collapseId}}"
-                            onClick="event.stopPropagation()"
-                    >
-                        &#x1F4AC; {{ $post->comments->count() }} Comments
-                    </button>
+                    &#x1F4AC; {{ $comment->post->comments->count() }} Comments
                 </div>
             </div>
 
             <!-- Comments Dropdown -->
-            <div class="collapse border-top" id="{{$collapseId}}">
-                <ul class="list-group list-group-flush">
-
-                    <!-- Each comment displayed with username, content and claps -->
-                    @foreach ($post->comments as $comment)
-                    <li class="list-group-item d-flex justify-content-between">
-                        <div>
-                            <strong>
-                                {{ $comment->user->username }}:
-                            </strong>
-                            {{ $comment->content }}
-                        </div>
-                        <div>
-                            <div>
-                                &#x1F44F; {{ $comment->claps }}
-                            </div>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
+            <div class="d-flex justify-content-between my-2 mx-3">
+                <div style="color: deepskyblue">
+                    <strong>
+                        {{ $comment->user->username }}:
+                    </strong>
+                    {{ $comment->content }}
+                </div>
+                <div>
+                    &#x1F44F; {{ $comment->claps }}
+                </div>
             </div>
         </div>
 
         <br>
     @endforeach
-
     <!-- Pagination links -->
     <div class="d-flex justify-content-center">
-        {{ $posts->links('pagination::bootstrap-5') }}
+        {{ $comments->links('pagination::bootstrap-5') }}
     </div>
 @endsection

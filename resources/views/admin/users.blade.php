@@ -1,7 +1,8 @@
 @extends('layouts.myapp')
 
 <!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
-
+@section('nav_settings', 'active')
+@section('nav_all_users', 'active')
 
 @section('content')
 

@@ -41,16 +41,17 @@ class PostController extends Controller
         }
 
         return view('posts.index',
-                    ['posts'=>$posts,
-                    'profileUser' => $user,
+                    [
+                        'posts'=>$posts,
+                        'profileUser' => $user,
                     ]);
     }
 
     public function show(Post $post)
     {
         return view('posts.show',
-            ['post'=>$post,
-            'profileUser' => $post->user
+            [
+                'post'=>$post
             ]);
     }
 
@@ -125,15 +126,15 @@ class PostController extends Controller
     // Add a clap
     public function clap(Post $post)
     {
-        $post->increment('claps');
-        return back();
-    }
+        $post->claps()->toggle(auth()->user()->id);
+        $post->claps = $post->claps()->count();
+        $post->save();
 
-    // Remove a clap
-    public function unclap(Post $post)
-    {
-        $post->decrement('claps');
-        return back();
+        return view('posts.show',
+            [
+                'post'=>$post,
+                'profileUser' => $post->user
+            ]);
     }
 
 

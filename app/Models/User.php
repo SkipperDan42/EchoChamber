@@ -96,4 +96,16 @@ class User extends Authenticatable
     {
         return $this -> hasMany(Comment::class);
     }
+
+    public function clappedPosts()
+    {
+        return $this->belongsToMany(Post::class, 'post_claps')
+            ->withTimestamps();
+    }
+
+    public function clappedComments()
+    {
+        return $this->belongsToMany(Comment::class, 'comment_claps')
+            ->withTimestamps();
+    }
 }

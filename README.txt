@@ -40,9 +40,13 @@ CREATIVE DECISIONS:
         sanitization is for SNOWFLAKES.
 
 DEVELOPMENT DECISIONS:
+    - NOTE that while running migrations it may fail due to overflow error. This is because
+        picsum only has 1084 images, but I'm forcing the random number to be unique - with
+        300+ posts, this can cause the migration to fail. It usually works second time!!
     - All buttons to interact with Shouts (Clap, Echo, Backpedal, Delete) and Whispers are
         located on the Shout's show view. This removes the need for Javascript (primarily as
         adding a Clap will alter the Shout's ranking - and therefore position - within The Chamber).
+
 
 
 

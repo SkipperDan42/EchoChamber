@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" href="{{ asset('images/echo_logo_trans_500.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -25,7 +26,7 @@
     <div class="sticky-top"
          style="background-color:white; border-bottom:2px solid #000000"
     >
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg custom-navbar">
             <div class="container-fluid">
 
                 <!-- NAVBAR ICON -->
@@ -105,7 +106,7 @@
 
                                 <!-- Personal details -->
                                 <li>
-                                    <a class="dropdown-item @yield('nav_statistics')"
+                                    <a class="dropdown-item @yield('nav_my_details')"
                                        href="{{ route("users.details", auth()->user()->id) }}"
                                     >
                                         My Details
@@ -114,7 +115,7 @@
 
                                 <!-- Personal statistics -->
                                 <li>
-                                    <a class="dropdown-item @yield('nav_statistics')"
+                                    <a class="dropdown-item @yield('nav_my_stats')"
                                        href="{{ route("users.stats", auth()->user()->id) }}"
                                     >
                                         Alternative Facts

@@ -1,5 +1,8 @@
 @extends('layouts.myapp')
 
+@section('nav_settings', 'active')
+@section('nav_user_details', 'active')
+
 @section('content')
     <div class="card shadow-sm mx-auto"
          style="max-width: 600px;"

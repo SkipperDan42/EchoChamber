@@ -11,38 +11,14 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
-/* Strongest override for bg-dark */
-nav.navbar.navbar-dark.bg-dark {
-    background-color: #000 !important;
-    border-color: transparent !important;
+.custom-navbar {
+    --bs-navbar-color: #000000 !important;
 }
 
-/* Navbar text colors */
-nav.navbar.bg-dark .navbar-brand,
-nav.navbar.bg-dark .nav-link {
-    color: #ffb727 !important;
-    transition: all 0.2s ease; /* smooth hover effect */
+.custom-navbar a {
+    color: #FFFFFF !important;
 }
 
-/* Active nav link */
-nav.navbar.bg-dark .nav-link.active,
-nav.navbar.bg-dark .navbar-brand.active {
-    color: #56feff !important;
-}
-
-/* Hover highlight for links */
-nav.navbar.bg-dark .nav-link:hover,
-nav.navbar.bg-dark .nav-link:focus {
-    color: #ffffff !important;       /* text stays white */
-    background-color: #333 !important; /* dark grey background highlight */
-    border-radius: 0.25rem;           /* slightly rounded edges */
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-}
-
-/* Dropdown menu items hover */
-nav.navbar.bg-dark .dropdown-menu .dropdown-item:hover,
-nav.navbar.bg-dark .dropdown-menu .dropdown-item:focus {
-    background-color: #333 !important;
-    color: #fff !important;
+.custom-navbar a:hover, .custom-navbar a.active {
+    color: #FFD700 !important;
 }

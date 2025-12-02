@@ -56,5 +56,22 @@ class CommentsTableSeeder extends Seeder
         Comment::factory()
             -> count(998)
             -> create();
+
+
+        // Create claps on comments that have been clapped (i.e. liked)
+        // NOTE this uses the claps relationship to fill the comment_claps pivot table
+        $users = User::all()->pluck('id');
+        $comments = Comment::where('claps' ,'>', 0)
+            -> get();
+        foreach ($comments as $comment) {
+            // Take random selection of users for each clap, excluding the comment owner
+            $clappers = $users
+                -> reject(fn($id) => $id === $comment->user_id)
+                -> shuffle()
+                -> take($comment->claps);
+
+            // Attach claps to pivot without removing previous ones
+            $comment->claps()->syncWithoutDetaching($clappers);
+        }
     }
 }

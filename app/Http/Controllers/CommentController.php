@@ -10,6 +10,25 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+    // Method loads posts either from all users (the feed)
+    // or from a single user (a profile)
+    // depending on the route used (and whether a user is provided)
+    public function comments(User $user)
+    {
+
+        // Get all comments belonging to a user and post preloaded. Paginate them to simplify loading
+        $comments = Comment::with(['user', 'post'])
+                    ->where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+
+        return view('comments.index',
+            [
+                'comments'=>$comments,
+                'profileUser' => $user,
+            ]);
+    }
+
     public function create()
     {
         return $this->edit();
@@ -56,21 +75,17 @@ class CommentController extends Controller
         $comment->save();
 
         // Success confirmation and redirect
-        session()->flash('message', $validatedData['id'] ? 'Comment updated' : 'Commented');
+        session()->flash('message', $comment->id ? 'Comment updated' : 'Commented');
         return redirect()->route('posts.show', $comment->post_id);
     }
 
     // Add a clap
     public function clap(Comment $comment)
     {
-        $comment->increment('claps');
-        return back();
-    }
+        $comment->claps()->toggle(auth()->user()->id);
+        $comment->claps = $comment->claps()->count();
+        $comment->save();
 
-    // Remove a clap
-    public function unclap(Comment $comment)
-    {
-        $comment->decrement('claps');
         return back();
     }
 

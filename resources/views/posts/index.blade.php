@@ -2,47 +2,62 @@
 
 <!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
 @if ($profileUser)
-    @if ($profileUser->id === auth()->id())
+        <!-- Is this is the profile of the currently authorised user -->
+        @section($profileUser->id === auth()->id() ? 'nav_profile' : 'nav_dashboard', 'active')
 
-        <!-- If this is the profile of the currently authorised user -->
-        @section('nav_profile', 'active')
         @section('buttons')
-            <div class="col text-center">
-                <a class="btn btn-primary"
-                   href="{{ route("posts.create") }}"
-                   role="button"
+            @if ($profileUser->id === auth()->id())
+                <div class="col text-center">
+                    <a class="btn btn-primary"
+                       href="{{ route("posts.create") }}"
+                       role="button"
+                    >
+                        Start Shouting
+                    </a>
+                </div>
+            @endif
+
+            <div class="col text-end dropdown">
+                <button class="btn btn-warning dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                 >
-                    Start Shouting
-                </a>
-            </div>
-            <div class="col text-end">
-                <a class="btn btn-warning"
-                   href="{{ route("users.details", $profileUser) }}"
-                   role="button"
+                    Boorhole
+                </button>
+                <div class="dropdown-menu"
+                     aria-labelledby="dropdownMenuButton"
                 >
-                    My Details
-                </a>
+                    <a class="dropdown-item"
+                       href="{{ route("users.details", $profileUser) }}"
+                       role="button"
+                    >
+                        Boor Deets
+                    </a>
+                    <a class="dropdown-item"
+                       href="{{ route("users.posts", $profileUser) }}"
+                       role="button"
+                    >
+                        Boor Shouts
+                    </a>
+                    <a class="dropdown-item"
+                       href="{{ route("users.comments", $profileUser) }}"
+                       role="button"
+                    >
+                        Boor Whispers
+                    </a>
+                    <a class="dropdown-item"
+                       href="{{ route("users.stats", $profileUser) }}"
+                       role="button"
+                    >
+                        Alternative Facts
+                    </a>
+                </div>
             </div>
         @endsection
-    @else
-
-        <!-- If this is the profile of another user -->
-        @section('nav_dashboard', 'active')
-        @section('buttons')
-            <div class="col text-center">
-            </div>
-            <div class="col text-end">
-                <a class="btn btn-warning"
-                   href="{{ route("users.details", $profileUser) }}"
-                   role="button"
-                >
-                    User Details
-                </a>
-            </div>
-        @endsection
-    @endif
 @else
-
     <!-- If this is not a user profile -->
     @section('nav_dashboard', 'active')
     @section('buttons')
@@ -58,8 +73,6 @@
         </div>
     @endsection
 @endif
-
-
 
 @section('content')
 
