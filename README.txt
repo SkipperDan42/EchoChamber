@@ -23,7 +23,7 @@ USING THE UI:
     - Upon viewing a Post many options are available to like, repost, edit and delete (depending
         on context - outlined below)
     - Clicking Monologue will show the authenticated User Profile
-    - Clicking Tools will offer a dropdown to access User Settings, Statistics and Log Out
+    - Clicking Tools will offer a dropdown to access User Settings, Statistics and Log Out (plus additional Admin views)
 
 CREATIVE DECISIONS:
     - The site is completely locked down, logging in is a requirement for anything.
@@ -34,10 +34,12 @@ CREATIVE DECISIONS:
     - An Echo is only linked to the original User, NOT the original Shout. This allows users to
         put words into the mouths of others, with absolutely no evidence that they did so.
         THAT IS YOUR RIGHT TO FREE SPEECH!
-    - An Admin may delete ANY Shout. While censorship is not ideal, what if some LIBS were to
+    - An Admin may delete ANY Shout or Whisper. While censorship is not ideal, what if some LIBS were to
         get in and spread their SATANIST propaganda?
-    - An Admin may NOT edit the content of a Shout - censorship is a last resort, but
+    - An Admin may NOT edit the content of a Shout or Whisper - censorship is a last resort, but
         sanitization is for SNOWFLAKES.
+    - An Admin has access to all User details and can change them, at will, but only with at request obviously,
+        we do predict a lot of older users on this platform...
 
 DEVELOPMENT DECISIONS:
     - NOTE that while running migrations it may fail due to overflow error. This is because
@@ -46,6 +48,22 @@ DEVELOPMENT DECISIONS:
     - All buttons to interact with Shouts (Clap, Echo, Backpedal, Delete) and Whispers are
         located on the Shout's show view. This removes the need for Javascript (primarily as
         adding a Clap will alter the Shout's ranking - and therefore position - within The Chamber).
+
+LOGINS:
+    - Here are some useful logins so you don't have to search the seeders:
+    - Admins:
+            2039924@echochamber.com
+            SYSarchitect!
+
+            admin@echochamber.com
+            admin
+
+    - Users:
+            twopintnigel@ukip.co.uk
+            BADpassword
+
+            aj@infowars.com
+            turnTHEfrogsGAY
 
 
 

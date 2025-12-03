@@ -10,15 +10,3 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
-
-.custom-navbar {
-    --bs-navbar-color: #000000 !important;
-}
-
-.custom-navbar a {
-    color: #FFFFFF !important;
-}
-
-.custom-navbar a:hover, .custom-navbar a.active {
-    color: #FFD700 !important;
-}

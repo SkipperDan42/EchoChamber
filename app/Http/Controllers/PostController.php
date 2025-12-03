@@ -9,9 +9,11 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    // Method loads posts either from all users (the feed)
-    // or from a single user (a profile)
-    // depending on the route used (and whether a user is provided)
+    /**
+     * Method loads posts either from all users (the feed)
+     * or from a single user (a profile)
+     * depending on the route used (and whether a user is provided)
+     */
     public function posts(?User $user = null)
     {
         // If not a user profile, show feed
@@ -47,6 +49,9 @@ class PostController extends Controller
                     ]);
     }
 
+    /**
+     * Returns a single Post
+     */
     public function show(Post $post)
     {
         return view('posts.show',
@@ -55,22 +60,25 @@ class PostController extends Controller
             ]);
     }
 
+    /**
+     * Create a Post
+     * Just calls edit with no Post
+     */
     public function create()
     {
         return $this->edit();
     }
 
-
+    /**
+     * Edit a Post
+     */
     public function edit(?Post $post = null)
     {
         return view('posts.create', ['post'=>$post]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * Store either a new, edited or echoed Post
      */
     public function store(Request $request)
     {
@@ -123,7 +131,9 @@ class PostController extends Controller
         return redirect()->route('posts.index');
     }
 
-    // Add a clap
+    /**
+     * Add or Remove a clap from a Post
+     */
     public function clap(Post $post)
     {
         $post->claps()->toggle(auth()->user()->id);
@@ -133,14 +143,11 @@ class PostController extends Controller
         return view('posts.show',
             [
                 'post'=>$post,
-                'profileUser' => $post->user
             ]);
     }
 
-
     /**
-     * ...
-     * @return \Illuminate\Http\RedirectResponse
+     * Destroy a Post
      */
     Public function destroy(Post $post)
     {

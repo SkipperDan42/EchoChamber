@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AccessMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Ensures that the User accessing this root is either an Admin or owns the Page
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

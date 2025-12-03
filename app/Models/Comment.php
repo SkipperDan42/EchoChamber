@@ -21,16 +21,25 @@ class Comment extends Model
         'claps'
     ];
 
+    /**
+     * Comment belongs to a User
+     */
     public function user()
     {
         return $this -> belongsTo(User::class);
     }
 
+    /**
+     * Comment belongs to a Post
+     */
     public function post()
     {
         return $this -> belongsTo(Post::class);
     }
 
+    /**
+     * Comment has many claps
+     */
     public function claps()
     {
         return $this->belongsToMany(User::class, 'comment_claps')

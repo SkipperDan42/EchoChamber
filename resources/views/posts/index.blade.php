@@ -1,11 +1,22 @@
 @extends('layouts.myapp')
 
 <!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
+<!-- Is this a profile page -->
 @if ($profileUser)
-        <!-- Is this is the profile of the currently authorised user -->
-        @section($profileUser->id === auth()->id() ? 'nav_profile' : 'nav_dashboard', 'active')
+        <!-- Is this is the profile of the currently authorised user - change navbar style-->
+        @if ($profileUser->id === auth()->id())
+            @section('nav_dashboard', '#FFFFFF')
+            @section('nav_profile', '#5de5fe')
+            @section('nav_settings', '#FFFFFF')
+        @else
+            @section('nav_dashboard', '#5de5fe')
+            @section('nav_profile', '#FFFFFF')
+            @section('nav_settings', '#FFFFFF')
+        @endif
+
 
         @section('buttons')
+            <!-- Is this is the profile of the currently authorised user - add shout button -->
             @if ($profileUser->id === auth()->id())
                 <div class="col text-center">
                     <a class="btn btn-primary"
@@ -17,6 +28,7 @@
                 </div>
             @endif
 
+            <!-- Add buttons for all profiles -->
             <div class="col text-end dropdown">
                 <button class="btn btn-warning dropdown-toggle"
                         type="button"
@@ -59,7 +71,9 @@
         @endsection
 @else
     <!-- If this is not a user profile -->
-    @section('nav_dashboard', 'active')
+    @section('nav_dashboard', '#5de5fe')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#FFFFFF')
     @section('buttons')
         <div class="col text-center">
             <a class="btn btn-primary"
@@ -76,6 +90,7 @@
 
 @section('content')
 
+    <!-- Loop through all posts and display as cards -->
     @foreach ($posts as $post)
 
         <!-- Collapse each card independently -->
@@ -103,7 +118,7 @@
                     </div>
 
                     <!-- Profile of Original Post Owner if Repost -->
-                    @if ($post->echoed)
+                    @if ($post->echoed && $post->echoed_post != null)
                         <div class="col text-center text-muted small">
                             <a class= "btn btn-info"
                                href="{{ route("users.posts", $post->echoed_post->user->id) }}"

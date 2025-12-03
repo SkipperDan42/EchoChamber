@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Title and Favicon -->
     <title>{{ config('app.name', 'Laravel') }}</title>
     <link rel="icon" href="{{ asset('images/echo_logo_trans_500.png') }}" type="image/png">
 
@@ -13,20 +14,23 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
 
     <!-- Styles / Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
 </head>
 
+<!-- Body of Site -->
 <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
     <div class="sticky-top"
          style="background-color:white; border-bottom:2px solid #000000"
     >
-        <nav class="navbar navbar-expand-lg custom-navbar">
+        <!-- NAVBAR - Hardcoded style cause overriding Bootstrap is a nightmare -->
+        <nav class="navbar navbar-expand-lg"
+             style="background-color: #000000; color: #FFFFFF;">
             <div class="container-fluid">
 
                 <!-- NAVBAR ICON -->
@@ -56,18 +60,25 @@
                     <!-- ALL NAVBAR BUTTONS HIDDEN BEHIND LOGIN -->
                     @auth
 
-                    <!-- NAVBAR LEFT SIDE -->
+                    <!-- NAVBAR CENTER BUTTONS -->
                     <ul class="navbar-nav mx-auto fs-4">
                         <li class="nav-item">
-                            <a class="nav-link me-5 @yield('nav_dashboard')"
+                            <!-- Button styles also hardcoded to overwrite Bootstrap -->
+                            <a class="nav-link me-5"
                                href="{{route("posts.index")}}"
+                               style="color: @yield('nav_dashboard')"
+                               onmouseover="this.style.color='#FFD700'"
+                               onmouseout="this.style.color='@yield('nav_dashboard')'"
                             >
                                 The Chamber
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link me-5 @yield('nav_profile')"
+                            <a class="nav-link me-5 "
                                href= "{{route("users.posts", $user = auth()->user()->id)}}"
+                               style="color: @yield('nav_profile')"
+                               onmouseover="this.style.color='#FFD700'"
+                               onmouseout="this.style.color='@yield('nav_profile')'"
                             >
                                 Monologue
                             </a>
@@ -77,22 +88,25 @@
                     <!-- NAVBAR RIGHT SIDE - TOOLS DROPDOWN -->
                     <ul class="navbar-nav">
                         <li class="nav-item dropdown fs-4">
-                            <a class="nav-link dropdown-toggle @yield('nav_settings')"
+                            <a class="nav-link dropdown-toggle "
                                role="button"
                                data-bs-toggle="dropdown"
                                aria-expanded="false"
+                               style="color: @yield('nav_settings')"
+                               onmouseover="this.style.color='#FFD700'"
+                               onmouseout="this.style.color='@yield('nav_settings')'"
                             >
                                 Tools
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end fs-5">
 
-                                <!-- All user view for admin -->
+                                <!-- All user and stats view for admins -->
                                 @if (auth()->user()->administrator_flag)
                                     <li>
                                         <a class="dropdown-item @yield('nav_all_users')"
                                            href="{{ route("admin.users") }}"
                                         >
-                                            All User Details
+                                            All Boor Deets
                                         </a>
                                     </li>
                                     <li>

@@ -52,6 +52,9 @@ class User extends Authenticatable
         $this->attributes['email'] = trim(strtolower($value));
     }
 
+    /**
+     * Returns the highest heard post (post with most views) by user
+     */
     public function getTopHeardPostAttribute()
     {
         return $this->posts()
@@ -59,6 +62,9 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Returns the highest heard comment (comment with most views) by user
+     */
     public function getTopHeardCommentAttribute()
     {
         return $this->comments()
@@ -66,6 +72,9 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Returns the highest clapped post (post with most likes) by user
+     */
     public function getTopClappedPostAttribute()
     {
         return $this->posts()
@@ -73,6 +82,9 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Returns the highest clapped comment (comment with most likes) by user
+     */
     public function getTopClappedCommentAttribute()
     {
         return $this->comments()
@@ -80,6 +92,9 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * Returns the highest echoed post (post most reblogged) by user
+     */
     public function getTopEchoedPostAttribute()
     {
         return $this->posts()
@@ -87,22 +102,34 @@ class User extends Authenticatable
             ->first();
     }
 
+    /**
+     * User has many posts
+     */
     public function posts()
     {
         return $this -> hasMany(Post::class);
     }
 
+    /**
+     * User has many comments
+     */
     public function comments()
     {
         return $this -> hasMany(Comment::class);
     }
 
+    /**
+     * User has clapped many posts
+     */
     public function clappedPosts()
     {
         return $this->belongsToMany(Post::class, 'post_claps')
             ->withTimestamps();
     }
 
+    /**
+     * User has clapped many comments
+     */
     public function clappedComments()
     {
         return $this->belongsToMany(Comment::class, 'comment_claps')

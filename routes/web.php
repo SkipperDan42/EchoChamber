@@ -7,7 +7,7 @@ use App\Http\Controllers\PostController;
 
 //----------------------------------POSTS----------------------------------//
 
-//POSTS: Feed
+//POSTS: Feed - Main Route
 Route::get('/', [PostController::class, 'posts'])
     ->name('posts.index')
     ->middleware('auth');
@@ -25,7 +25,7 @@ Route::get('/posts/{post}', [PostController::class, 'show'])
 //POSTS: Edit
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])
     ->name('posts.edit')
-    ->middleware('auth');
+    ->middleware('auth');   // NOTE not access as used for Echoes too
 
 //POSTS: Delete
 Route::get('/posts/{post}/delete', [PostController::class, 'destroy'])
@@ -53,7 +53,7 @@ Route::get('/comments/create', [CommentController::class, 'create'])
 //COMMENT: Edit
 Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])
     ->name('comments.edit')
-    ->middleware('auth');
+    ->middleware('auth', 'access');
 
 //COMMENT: Delete
 Route::get('/comments/{comment}/delete', [CommentController::class, 'destroy'])

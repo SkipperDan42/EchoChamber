@@ -2,33 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
 use App\Models\User;
-use App\Models\Post;
-use App\Rules\ImageUrl;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // DEPRECATED METHOD FOR LOADING FEED
+    /**
+     * Returns Admin view with all Users
+     */
     public function index()
     {
         $users = User::all();
         return view('admin.users', ['users'=>$users]);
     }
 
-    // DEPRECATED METHOD FOR LOADING FEED
+    /**
+     * Returns User view with all User details
+     */
     public function details(User $user)
     {
         return view('users.details', ['user'=>$user]);
     }
 
-    // DEPRECATED METHOD FOR LOADING FEED
+    /**
+     * Returns view to update User details
+     */
     public function update(User $user)
     {
         return view('users.update', ['user'=>$user]);
     }
 
+    /**
+     * Stores a new or updated user
+     */
     public function store(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -56,8 +62,8 @@ class UserController extends Controller
     }
 
     /**
-     * ...
-     * @return \Illuminate\Http\RedirectResponse
+     * Destroys a User
+     * Reroutes to Admin User view for an Admin, will automatically log-out User if they deleted themselves
      */
     Public function destroy(User $user)
     {
@@ -68,10 +74,9 @@ class UserController extends Controller
     }
 
 
-
-    // Method loads posts either from all users (the feed)
-    // or from a single user (a profile)
-    // depending on the route used (and whether a user is provided)
+    /**
+     * Loads User stats metrics and returns them to User stats view
+     */
     public function user_stats(User $user)
     {
         $postMetrics = [
@@ -89,6 +94,9 @@ class UserController extends Controller
             ]);
     }
 
+    /**
+     * Loads Users with Posts and Comments for Admin stats view
+     */
     public function all_user_stats()
     {
         $users = User::withCount(['posts', 'comments'])

@@ -1,7 +1,16 @@
 @extends('layouts.myapp')
 
 <!-- LOGIC FOR ACTIVE PAGE -->
-@section($post->user == auth()->user() ? 'nav_profile' : 'nav_dashboard', 'active')
+<!-- Is this is the post of the currently authorised user - change navbar style-->
+@if ($post->user->id === auth()->id())
+    @section('nav_dashboard', '#FFFFFF')
+    @section('nav_profile', '#5de5fe')
+    @section('nav_settings', '#FFFFFF')
+@else
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_dashboard', '#5de5fe')
+    @section('nav_settings', '#FFFFFF')
+@endif
 
 @section('content')
 
@@ -16,25 +25,6 @@
 
                 <!-- If Auth User is Post Owner then Backpedal and Delete options -->
                 @if ($post->user_id == auth()->user()->id)
-
-                    <!-- If Auth User is Admin they may clap their own Post -->
-                    @if (auth()->user()->administrator_flag)
-                        <div class="col-auto col-sm-auto">
-                            <form action="{{ route('posts.clap', $post) }}"
-                                  method="POST"
-                                  class="d-inline"
-                            >
-                                @php
-                                    $userClapped = $post->claps()
-                                                            ->where('user_id', auth()->user()->id)
-                                                            ->exists();
-                                @endphp
-                                <button class="btn {{ $userClapped ? 'btn-success' : 'btn-secondary' }}">
-                                    &#x1F44F; Clap
-                                </button>
-                            </form>
-                        </div>
-                    @endif
 
                     <div class="col-auto col-sm-auto">
                             <a class="btn btn-warning"
@@ -108,7 +98,7 @@
                 </div>
 
                 <!-- Profile of Original Post Owner if Repost -->
-                @if ($post->echoed)
+                @if ($post->echoed && $post->echoed_post != null)
                     <div class="col text-center text-muted small">
                         <a class= "btn btn-info"
                            href="{{ route("users.posts", $post->echoed_post->user->id) }}"
@@ -187,12 +177,12 @@
                             </a>
 
                             <!-- Clap Button -->
-                            @if (!$comment->user_id === auth()->user()->id || auth()->user()->administrator_flag)
+                            @if ($comment->user_id != auth()->id())
                                 <form action="{{ route('comments.clap', $comment) }}" method="POST">
                                     @csrf
                                     @php
                                         $userClapped = $comment->claps()
-                                                                ->where('user_id', auth()->user()->id)
+                                                                ->where('user_id', auth()->id())
                                                                 ->exists();
                                     @endphp
                                     <button class="btn btn-sm {{ $userClapped ? 'btn-success' : 'btn-secondary' }}">

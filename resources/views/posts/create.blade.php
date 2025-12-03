@@ -1,6 +1,9 @@
 @extends('layouts.myapp')
 
-@section('nav_profile', 'active')
+<!-- Change navbar style-->
+@section('nav_dashboard', '#FFFFFF')
+@section('nav_profile', '#5de5fe')
+@section('nav_settings', '#FFFFFF')
 
 @section('content')
     <br>
@@ -20,7 +23,7 @@
             >
                 @csrf
 
-                {{-- Input for Post Title --}}
+                <!-- Input for Post Title -->
                 <div class="form-group mb-3">
                     <label class="form-label"
                            for="title"
@@ -34,7 +37,7 @@
                            value="{{ old("title", $post->title ?? "") }}"
                     >
 
-                    {{-- Inline error message --}}
+                    <!-- Inline error message -->
                     @error('title')
                         <div class="alert alert-danger">
                             {{ $message }}
@@ -42,7 +45,7 @@
                     @enderror
                 </div>
 
-                {{-- Input for Post Content --}}
+                <!-- Input for Post Content -->
                 <div class="form-group mb-3">
                     <label class="form-label"
                            for="content"
@@ -56,7 +59,7 @@
                               rows="5"
                     >{{ old("content", $post->content ?? "") }}</textarea>
 
-                    {{-- Inline error message --}}
+                    <!-- Inline error message -->
                     @error('content')
                         <div class="alert alert-danger">
                             {{ $message }}
@@ -64,7 +67,7 @@
                     @enderror
                 </div>
 
-                {{-- Input for Media Link --}}
+                <!-- Input for Media Link -->
                 <div class="form-group mb-3">
                     <label class="form-label"
                            for="media"
@@ -78,7 +81,7 @@
                            value="{{ old("media", $post->media ?? "") }}"
                     >
 
-                    {{-- Inline error message --}}
+                    <!-- Inline error message -->
                     @error('media')
                         <div class="alert alert-danger">
                             {{ $message }}
@@ -86,19 +89,19 @@
                     @enderror
                 </div>
 
-                {{-- Hidden input to pass user data --}}
+                <!-- Hidden input to pass user data -->
                 <input type="hidden"
                        name="user_id"
                        value="{{ auth()->user()->id }}"
                 >
 
-                {{-- Hidden input to pass edited post data --}}
+                <!-- Hidden input to pass edited post data -->
                 <input type="hidden"
                        name="id"
                        value="{{ $post->id ?? null }}"
                 >
 
-                {{-- Submit and Cancel buttons --}}
+                <!-- Submit and Cancel buttons -->
                 <div class="d-flex justify-content-between mx-2 my-2">
                     <button type="submit" class="btn btn-success px-4">
                         Submit

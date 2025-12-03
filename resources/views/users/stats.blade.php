@@ -5,16 +5,20 @@
     $user = request()->route('user');
     $authProfile = ($user == auth()->user());
 @endphp
-<!-- If this is the profile of the currently authenticated user -->
-@if ($authProfile)
-    @section('nav_settings', 'active')
-    @section('nav_my_stats', 'active')
 
-    <!-- If this is another user profile dashboard active -->
+    <!-- Is this is the profile of the currently authorised user then change navbar style-->
+@if ($authProfile)
+    @section('nav_dashboard', '#FFFFFF')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#5de5fe')
+    @section('nav_my_stats', 'active')
 @else
-    @section('nav_dashboard', 'active')
+    @section('nav_dashboard', '#5de5fe')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#FFFFFF')
 @endif
 
+<!-- Add buttons for all profiles -->
 @section('buttons')
     <div class="col text-end dropdown">
         <button class="btn btn-warning dropdown-toggle"
@@ -60,15 +64,21 @@
 
 @section('content')
 
+    <!-- Accordion style dropdown for statistics -->
     <div id="accordion"
          class="accordion py-2 px-3">
 
+        <!-- Loop through the post metrics provided by the User Controller -->
         @foreach ($postMetrics as $postMetric => $postMetricValue)
+            <!-- Remove spaces from Metric to creat unique accordion IDs -->
             @php
                 $metricID = str_replace(' ', '', $postMetric);
             @endphp
+
+            <!-- Only add Item if it exists (to avoid crashing for  new users) -->
             @if (!empty($postMetricValue))
                 <div class="accordion-item">
+                    <!-- Header with Metric name -->
                     <div class="accordion-header"
                          id="heading{{ $metricID }}"
                     >
@@ -183,14 +193,20 @@
             @endif
         @endforeach
 
+        <!-- Loop through the Comment metrics provided by the User Controller -->
         @foreach ($commentMetrics as $commentMetric => $commentMetricValue)
+
+            <!-- Remove spaces from Metric to creat unique accordion IDs -->
             @php
                 $metricID = str_replace(' ', '', $commentMetric);
                 $commentPost = $commentMetricValue->post
             @endphp
 
+            <!-- Only add Item if it exists (to avoid crashing for  new users) -->
             @if (!empty($commentMetricValue))
                 <div class="accordion-item">
+
+                    <!-- Header with Metric name -->
                     <div class="accordion-header"
                          id="heading{{ $metricID }}"
                     >

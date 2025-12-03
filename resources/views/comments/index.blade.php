@@ -2,10 +2,19 @@
 
 <!-- LOGIC FOR ACTIVE PAGE AND BUTTONS -->
 @if ($profileUser)
-    <!-- Is this is the profile of the currently authorised user -->
-    @section($profileUser->id === auth()->id() ? 'nav_profile' : 'nav_dashboard', 'active')
+    <!-- Is this is the profile of the currently authorised user then change navbar style-->
+    @if ($profileUser->id === auth()->id())
+        @section('nav_dashboard', '#FFFFFF')
+        @section('nav_profile', '#5de5fe')
+        @section('nav_settings', '#FFFFFF')
+    @else
+        @section('nav_profile', '#FFFFFF')
+        @section('nav_dashboard', '#5de5fe')
+        @section('nav_settings', '#FFFFFF')
+    @endif
 
     @section('buttons')
+        <!-- Is this is the profile of the currently authorised user - add shout button -->
         @if ($profileUser->id === auth()->id())
             <div class="col text-center">
                 <a class="btn btn-primary"
@@ -17,6 +26,7 @@
             </div>
         @endif
 
+        <!-- Add buttons for all profiles -->
         <div class="col text-end dropdown">
             <button class="btn btn-warning dropdown-toggle"
                     type="button"
@@ -59,7 +69,9 @@
     @endsection
 @else
     <!-- If this is not a user profile -->
-    @section('nav_dashboard', 'active')
+    @section('nav_dashboard', '#5de5fe')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#FFFFFF')
     @section('buttons')
         <div class="col text-center">
             <a class="btn btn-primary"
@@ -76,6 +88,7 @@
 
 @section('content')
 
+    <!-- Loop through all comments and display as cards -->
     @foreach ($comments as $comment)
 
         <!-- CARD FOR POST -->
@@ -97,7 +110,7 @@
                     </div>
 
                     <!-- Profile of Original Post Owner if Repost -->
-                    @if ($comment->post->echoed)
+                    @if ($comment->post->echoed && $comment->post->echoed_post != null)
                         <div class="col text-center text-muted small">
                             <a class= "btn btn-info"
                                href="{{ route("users.posts", $comment->post->echoed_post->user->id) }}"

@@ -25,22 +25,34 @@ class Post extends Model
         'claps'
     ];
 
+    /**
+     * Returns the post that this post echoed (reblogged))
+     */
     public function getEchoedPostAttribute()
     {
         return Post::where('id', $this->echoed)
                 ->first();
     }
 
+    /**
+     * Post belongs to a User
+     */
     public function user()
     {
         return $this -> belongsTo(User::class);
     }
 
+    /**
+     * Post has many comments
+     */
     public function comments()
     {
         return $this -> hasMany(Comment::class);
     }
 
+    /**
+     * Post has many claps
+     */
     public function claps()
     {
         return $this->belongsToMany(User::class, 'post_claps')

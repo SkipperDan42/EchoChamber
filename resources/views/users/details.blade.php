@@ -4,16 +4,19 @@
 @php
     $authProfile = ($user == auth()->user());
 @endphp
-<!-- If this is the profile of the currently authenticated user -->
+    <!-- Is this is the profile of the currently authorised user then change navbar style-->
 @if ($authProfile)
-    @section('nav_settings', 'active')
+    @section('nav_dashboard', '#FFFFFF')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#5de5fe')
     @section('nav_my_details', 'active')
-
-<!-- If this is another user profile dashboard active -->
 @else
-    @section('nav_dashboard', 'active')
+    @section('nav_dashboard', '#5de5fe')
+    @section('nav_profile', '#FFFFFF')
+    @section('nav_settings', '#FFFFFF')
 @endif
 
+<!-- Add buttons for all profiles -->
 @section('buttons')
     <div class="col text-end dropdown">
         <button class="btn btn-warning dropdown-toggle"
@@ -77,7 +80,6 @@
                                 &#x1F4DD; Update Details
                             </a>
                     </div>
-
                     <div class="col-auto col-sm-auto">
                         <a class="btn btn-danger"
                            href="{{ route("users.delete", $user->id) }}"

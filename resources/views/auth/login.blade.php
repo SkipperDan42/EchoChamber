@@ -5,11 +5,13 @@
         <!-- Header -->
         <div class="card-body d-flex justify-content-between align-items-center bg-white border-bottom-0">
 
+            <!-- Login Prompt -->
             <div>
                 <h2>Already have an account?</h2>
                 <br>
                 <h2>Then Login</h2>
             </div>
+            <!-- Login Form -->
             <form action="{{ route('login') }}" method="POST">
                 @csrf
                 <div class="mb-3">
@@ -36,7 +38,7 @@
     <div class="card shadow-sm mx-auto" style="max-width: 600px;">
         <!-- Header -->
         <div class="card-body d-flex justify-content-between align-items-center bg-white border-bottom-0">
-
+            <!-- Register Prompt & Button -->
             <h2>
                 Alternatively Create an Account
             </h2>

@@ -1,6 +1,9 @@
 @extends('layouts.myapp')
 
-@section('nav_settings', 'active')
+<!-- Change navbar style-->
+@section('nav_dashboard', '#FFFFFF')
+@section('nav_profile', '#FFFFFF')
+@section('nav_settings', '#5de5fe')
 @section('nav_user_details', 'active')
 
 @section('content')
@@ -13,13 +16,16 @@
                 Update Account Details
             </h1>
         </div>
+        <!-- Update User Form -->
         <div class="card-body">
             <form method="POST"
                   action="{{ route('users.store', $user->id) }}"
             >
                 @csrf
+                <!-- Call PUT method, should do for all updates but Post and Comment doubling as POST for new -->
                 @method('PUT')
 
+                <!-- Username -->
                 <div class="mb-3">
                     <label for="username"
                            class="form-label"
@@ -38,6 +44,8 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- First Name -->
                 <div class="mb-3">
                     <label for="first_name"
                            class="form-label"
@@ -56,6 +64,8 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- Last Name -->
                 <div class="mb-3">
                     <label for="last_name"
                            class="form-label"
@@ -74,6 +84,8 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- Email -->
                 <div class="mb-3">
                     <label for="email"
                            class="form-label"
@@ -92,12 +104,16 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- Password Prompt -->
                 <div>
                     <br>
                     <p style="color:red">
                         Leave the password field empty to keep as is.
                     </p>
                 </div>
+
+                <!-- Password Fields -->
                 <div class="mb-3">
                     <label for="password"
                            class="form-label"
@@ -132,6 +148,8 @@
                         </div>
                     @enderror
                 </div>
+
+                <!-- Update and Back Buttons -->
                 <div class="row align-items-cente">
                     <div class="col text-start">
                         <button type="submit"
@@ -147,7 +165,6 @@
                             Back
                         </a>
                     </div>
-
                 </div>
             </form>
         </div>

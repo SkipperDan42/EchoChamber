@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use App\Models\Comment;
 use App\Models\User;
-use App\Rules\ImageUrl;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    // Method loads posts either from all users (the feed)
-    // or from a single user (a profile)
-    // depending on the route used (and whether a user is provided)
+
+    /**
+     * Load all Comments from a single User
+     */
     public function comments(User $user)
     {
 
@@ -29,22 +28,25 @@ class CommentController extends Controller
             ]);
     }
 
+    /**
+     * Create a Comment
+     * Just calls Edit with no Comment provided
+     */
     public function create()
     {
         return $this->edit();
     }
 
-
+    /**
+     * Edit a Comment
+     */
     public function edit(?Comment $comment = null)
     {
         return view('comments.create', ['comment'=>$comment]);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * Store either a new or edited Comment
      */
     public function store(Request $request)
     {
@@ -79,20 +81,24 @@ class CommentController extends Controller
         return redirect()->route('posts.show', $comment->post_id);
     }
 
-    // Add a clap
+    /**
+     * Add or Remove a clap from a Comment
+     */
     public function clap(Comment $comment)
     {
         $comment->claps()->toggle(auth()->user()->id);
         $comment->claps = $comment->claps()->count();
         $comment->save();
 
-        return back();
+        return view('posts.show',
+            [
+                'post'=>$comment->post,
+            ]);
     }
 
 
     /**
-     * ...
-     * @return \Illuminate\Http\RedirectResponse
+     * Destroy a Comment
      */
     Public function destroy(Comment $comment)
     {

@@ -1,6 +1,9 @@
 @extends('layouts.myapp')
 
-@section('nav_profile', 'active')
+<!-- Change navbar style-->
+@section('nav_dashboard', '#FFFFFF')
+@section('nav_profile', '#5de5fe')
+@section('nav_settings', '#FFFFFF')
 
 @section('content')
     <br>
@@ -20,7 +23,7 @@
             >
                 @csrf
 
-                {{-- Input for Comment Content --}}
+                <!-- Input for Comment Content -->
                 <div class="form-group mb-3">
                     <textarea class="form-control"
                               id="content"
@@ -29,7 +32,7 @@
                               rows="5"
                     >{{ old("content", $comment->content ?? "") }}</textarea>
 
-                    {{-- Inline error message --}}
+                    <!-- Inline error message -->
                     @error('content')
                         <div class="alert alert-danger">
                             {{ $message }}
@@ -37,25 +40,25 @@
                     @enderror
                 </div>
 
-                {{-- Hidden input to pass user data --}}
+                <!-- Hidden input to pass user data -->
                 <input type="hidden"
                        name="user_id"
                        value="{{ auth()->user()->id }}"
                 >
 
-                {{-- Hidden input to pass post data --}}
+                <!-- Hidden input to pass post data -->
                 <input type="hidden"
                        name="post_id"
                        value="{{ $comment->post->id }}"
                 >
 
-                {{-- Hidden input to pass edited post data --}}
+                <!-- Hidden input to pass edited post data -->
                 <input type="hidden"
                        name="id"
                        value="{{ $comment->id ?? null }}"
                 >
 
-                {{-- Submit and Cancel buttons --}}
+                <!-- Submit and Cancel buttons -->
                 <div class="d-flex justify-content-between mx-2 my-2">
                     <button type="submit"
                             class="btn btn-success px-4"
